@@ -1,0 +1,22 @@
+{
+  "name": "nodejs_api",
+  "version": "1.0.0",
+  "description": "Bu paket NodeJS'in sunucu özelliklerini görmek için geliştirilmiştir",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js",
+    "developer": "echo \"hello how are you?\" "
+  },
+  "keywords": [
+    "nodejs",
+    "api",
+    "server",
+    "backend"
+  ],
+  "author": "frknecn3",
+  "license": "ISC",
+  "dependencies": {
+    "nodemon": "^3.1.10"
+  }
+}

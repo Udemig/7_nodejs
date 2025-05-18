@@ -1,0 +1,20 @@
+{
+  "name": "fullstack-movie-backend",
+  "version": "1.0.0",
+  "description": "fullstack movie projesinin backend tarafıdır",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "keywords": [
+    "fullstack",
+    "frontend",
+    "backend"
+  ],
+  "author": "frknecn3",
+  "license": "ISC",
+  "dependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
