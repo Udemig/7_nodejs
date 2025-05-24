@@ -1,6 +1,9 @@
 const http = require("http");
 const fs = require('fs')
 const getRequest = require('./methods/get');
+const deleteRequest = require("./methods/delete");
+const optionsRequest = require("./methods/options");
+const postRequest = require("./methods/post");
 
 
 
@@ -19,14 +22,11 @@ const server = http.createServer((req,res)=>{
         case "GET":
             return getRequest(req,res); 
         case "POST":
-            console.log("Sunucuya POST türünde istek atıldı.");
-            return res.end("POST türünde istek attınız.")
+            return postRequest(req,res);
         case "DELETE":
-            console.log("Sunucuya DELETE türünde istek atıldı");
-            return res.end("DELETE türünde istek attınız.");
+            return deleteRequest(req,res);
         case "OPTIONS":
-            console.log("Sunucuya OPTIONS türünde istek atıldı.");
-            return res.end("OPTIONS türünde istek attınız.");
+            return optionsRequest(req,res);
         default:
             console.log("Sunucuya izin verilmeyen "+ req.method + " metoduyla istek atıldı.")
             return res.end("Sunucu bu istek metoduna izin vermiyor.")
