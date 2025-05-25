@@ -75,5 +75,25 @@
         "duration": "2s 21dk",
         "language": "ingilizce",
         "id": "1bc38e79-4e59-4b28-a1f6-d9692920c551"
+    },
+    {
+        "title": "YENİ FİLM YÜKLEME",
+        "year": "2015",
+        "genre": [
+            "Aksiyon",
+            "Bilim Kurgu",
+            "Macera"
+        ],
+        "rating": "7.3",
+        "description": "Süper kahramanlar, dünyayı tehdit eden yapay zeka Ultron'a karşı güçlerini birleştiriyor.",
+        "director": "Joss Whedon",
+        "cast": [
+            "Robert Downey Jr.",
+            "Scarlett Johansson",
+            "Mark Ruffalo"
+        ],
+        "duration": "2s 21dk",
+        "language": "ingilizce",
+        "id": "3cb3cab0-fb2e-4f56-b915-c83963c34903"
     }
 ]

@@ -4,6 +4,7 @@ const getRequest = require('./methods/get');
 const deleteRequest = require("./methods/delete");
 const optionsRequest = require("./methods/options");
 const postRequest = require("./methods/post");
+const defaultRequest = require("./methods/default");
 
 
 
@@ -11,6 +12,9 @@ const postRequest = require("./methods/post");
 // 1) önce sunucuyu oluştur.
 
 const server = http.createServer((req,res)=>{
+
+    // CORS hatalarını engelleme
+    res.setHeader("Access-Control-Allow-Origin","*");
 
     // console.log("İSTEK GELDİ")
 
@@ -28,8 +32,7 @@ const server = http.createServer((req,res)=>{
         case "OPTIONS":
             return optionsRequest(req,res);
         default:
-            console.log("Sunucuya izin verilmeyen "+ req.method + " metoduyla istek atıldı.")
-            return res.end("Sunucu bu istek metoduna izin vermiyor.")
+            return defaultRequest(req,res);
     }
 
     return res.end("Sunucumuza hoşgeldiniz. Fullstack Movie App.")

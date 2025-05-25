@@ -14,7 +14,7 @@ const bodyParser = (req) => {
 
             req.on("data",(chunk)=>{
                 // bodynin sonuna şuanki chunkı(parçayı) ekle
-                body += chunk
+                body = body +  chunk
             });
 
             // eklemeler bitince json verisini js'e çevir
