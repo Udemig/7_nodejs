@@ -3,6 +3,8 @@ import Hero from '../components/Hero'
 import { useQuery } from '@tanstack/react-query'
 import api from '../utils/api';
 import MovieCard from '../components/MovieCard';
+import Error from '../components/Error';
+import Loader from '../components/Loader';
 
 const MainPage = () => {
 
@@ -19,14 +21,14 @@ const MainPage = () => {
 
       {
         isLoading ?
-          <h1 className='text-4xl'>LOADING</h1>
+          <Loader />
           : error ?
-            <h1 className='text-4xl text-red-600'>
-              {error.message}
-            </h1>
+            <Error info={error} refetch={refetch} />
             :
             
-              <div>
+              <div
+                className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 '
+              >
                 {
                   data.map((movie)=><MovieCard movie={movie}/>)
                 }

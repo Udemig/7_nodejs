@@ -45,8 +45,10 @@ const postRequest = async (req, res) => {
 
             eksikKeyler.join(',');
 
+            res.writeHead(400);
             res.end(`${eksikKeyler} değerleri boş bırakılamaz.`);
-            return;
+
+            return; 
         }
 
 
