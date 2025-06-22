@@ -1,6 +1,6 @@
 import express from 'express'
-import { createRecipe, getAllRecipes } from '../controllers/recipeController.js';
-
+import { createRecipe, deleteRecipe, getAllRecipes, getRecipe, updateRecipe } from '../controllers/recipeController.js';
+import controlId from '../middleware/controlid.js';
 
 
 
@@ -24,8 +24,14 @@ router
 // id path parametresini kullanacağımız alanlar şunlardır:
 
 // spesifik bir tarifi getirmek 
-// spesifik bir tarifi silmek
 // spesifik bir tarifi güncellemek
+// spesifik bir tarifi silmek
+
+router
+    .route('/api/v1/recipes/:id') // => buradaki :id 'nin parametre olduğunu express otomatik olarak algılar.
+    .get(controlId, getRecipe)
+    .patch(controlId, updateRecipe)
+    .delete(controlId, deleteRecipe)
 
 
 // ana sunucuya bu rotaları tanıtmak için routerı export edip, ana sunucuda import etmemiz gerekir.

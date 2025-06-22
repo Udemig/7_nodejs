@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+
+@layer components {
+
+    .badge{
+        @apply bg-yellow-500 py-2 px-4 inline-flex items-center gap-2 rounded-lg text-white
+    }
+
+    .title{
+        @apply text-2xl font-bold mb-4 text-red-400
+    }
+
+    .btn{
+        @apply bg-gray-400 py-2 px-4 rounded-md text-white font-semibold hover:bg-gray-500 transition
+    }
+
+    .input{
+        @apply rounded-md p-2 bg-white focus:outline-red-400 placeholder:text-gray-300
+    }
+}

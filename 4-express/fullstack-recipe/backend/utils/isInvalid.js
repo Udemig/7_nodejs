@@ -1,4 +1,6 @@
 export const isInvalid = (newRecipe) => {
+
+    //yeni tarif oluştururken body'den gelmesi gereken değerler
     const reqFields = [
         "recipeName",
         "category",

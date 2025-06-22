@@ -1,5 +1,6 @@
 import express from 'express';
 import recipeRoutes from './routes/recipeRoutes.js';
+import cors from 'cors';
 
 
 
@@ -11,6 +12,10 @@ import recipeRoutes from './routes/recipeRoutes.js';
 // express fonksiyonunu çağırarak bir sunucu örneği alırız.
 
 const app = express();
+
+// farklı linklerden, portlardan ve tarayıcılardan istek atılabilmesini sağlamak için CORS middleware'ini kullanarak izin veririz
+
+app.use(cors())
 
 // gerekli arayazılımları (middleware) isteklerimiz routelara GİTMEDEN ÖNCE belirleriz.
 app.use(express.json());

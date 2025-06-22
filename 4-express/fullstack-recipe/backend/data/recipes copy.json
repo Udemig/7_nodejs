@@ -1,5 +1,35 @@
 [
     {
+        "id": "2",
+        "recipeName": "köfte",
+        "category": "Ana Yemek",
+        "ingredients": [
+            "4 adet patlıcan",
+            "300 gram kıyma",
+            "1 adet soğan",
+            "2 adet domates",
+            "2 yemek kaşığı sıvı yağ",
+            "1 yemek kaşığı salça",
+            "Tuz",
+            "Karabiber"
+        ],
+        "": [
+            "Patlıcanları alacalı soyup kızgın yağda hafifçe kızartın.",
+            "Soğanı doğrayıp sıvı yağda kavurun",
+            " üzerine kıymayı ekleyip pişirin.",
+            "Domatesleri rendeleyin",
+            " kıymaya ekleyip birkaç dakika daha kavurun.",
+            "Salçayı ve baharatları ekleyin",
+            " karıştırın.",
+            "Kızarmış patlıcanları fırın kabına dizin ve ortalarını açarak iç harcı doldurun.",
+            "Üzerine sıcak su ekleyip 180 derece fırında 20 dakika pişirin.",
+            "Sıcak servis yapın."
+        ],
+        "recipeTime": "15",
+        "servingSuggestion": "Yanında pirinç pilavı ile servis edilebilir.",
+        "image": "https://picsum.photos/502"
+    },
+    {
         "id": "3",
         "recipeName": "Menemen",
         "category": "Kahvaltı",
@@ -55,36 +85,6 @@
         "image": "https://picsum.photos/504"
     },
     {
-        "id": "2",
-        "recipeName": "köfte",
-        "category": "Ana Yemek",
-        "ingredients": [
-            "4 adet patlıcan",
-            "300 gram kıyma",
-            "1 adet soğan",
-            "2 adet domates",
-            "2 yemek kaşığı sıvı yağ",
-            "1 yemek kaşığı salça",
-            "Tuz",
-            "Karabiber"
-        ],
-        "instructions": [
-            "Patlıcanları alacalı soyup kızgın yağda hafifçe kızartın.",
-            "Soğanı doğrayıp sıvı yağda kavurun",
-            " üzerine kıymayı ekleyip pişirin.",
-            "Domatesleri rendeleyin",
-            " kıymaya ekleyip birkaç dakika daha kavurun.",
-            "Salçayı ve baharatları ekleyin",
-            " karıştırın.",
-            "Kızarmış patlıcanları fırın kabına dizin ve ortalarını açarak iç harcı doldurun.",
-            "Üzerine sıcak su ekleyip 180 derece fırında 20 dakika pişirin.",
-            "Sıcak servis yapın."
-        ],
-        "recipeTime": "15",
-        "servingSuggestion": "Yanında pirinç pilavı ile servis edilebilir.",
-        "image": "https://picsum.photos/502"
-    },
-    {
         "id": "8c9017c7-0684-404e-b6a8-e1df53ebf723",
         "recipeName": "Kaburga Dolması",
         "category": "Ana Yemek",
@@ -118,33 +118,5 @@
         "recipeTime": "180",
         "servingSuggestion": "Yanında yoğurt ve yeşilliklerle servis edilebilir.",
         "image": "https://picsum.photos/seed/32835b96-7cf7-4bbb-927e-6bfaafed280a/500/500"
-    },
-    {
-        "recipeName": "Mercimek Çorbası",
-        "category": "Çorba",
-        "ingredients": [
-            "1 su bardağı kırmızı mercimek",
-            "1 adet soğan",
-            "1 adet havuç",
-            "1 yemek kaşığı salça",
-            "2 yemek kaşığı sıvı yağ",
-            "6 su bardağı su",
-            "Tuz",
-            "Karabiber",
-            "Kimyon"
-        ],
-        "instructions": [
-            "Soğanı yemeklik doğrayın ve sıvı yağda kavurun.",
-            "Doğranmış havucu ekleyip birkaç dakika daha kavurun.",
-            "Salçayı ekleyin ve karıştırın.",
-            "Yıkanmış mercimekleri ve suyu tencereye ekleyin.",
-            "Mercimekler yumuşayıncaya kadar orta ateşte pişirin.",
-            "Çorbayı blenderdan geçirin.",
-            "Tuz ve baharatları ekleyip sıcak servis yapın."
-        ],
-        "recipeTime": "30",
-        "servingSuggestion": "Limon ile servis edilebilir.",
-        "id": "c85c215a-3c10-4340-8488-274eaf7ec42e",
-        "image": "https://picsum.photos/seed/33ddd50a-330c-4e96-977f-9de748025d35/500/500"
     }
 ]
