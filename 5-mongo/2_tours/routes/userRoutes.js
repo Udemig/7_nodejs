@@ -1,6 +1,6 @@
 import express from 'express';
 import { getAllUsers } from '../controllers/userController.js';
-import { login, protect, register } from '../controllers/authController.js';
+import { login, logout, protect, register } from '../controllers/authController.js';
 
 
 
@@ -11,6 +11,8 @@ const router = express.Router();
 router.get('/', protect, getAllUsers)
 
 router.post('/login', login)
+
+router.post('/logout', logout)
 
 router.post('/register', register)
 

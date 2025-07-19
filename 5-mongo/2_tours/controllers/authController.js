@@ -131,6 +131,33 @@ export const protect = async (req, res, next) => {
 
 
 
+// ROL BAZLI YETKİ MİDDLEWARE'İ
+// örn bazı rotalara sadece adminler/moderatörler erişebilsin, düz kullanıcıların yetkisi olmasın.
+
+export const restrictTo = (...roles) =>
+    (req, res, next) => {
+
+        // 1) İzin verilen rollerin arasında mevcut kullanıcının rolü yoksa eğer hata gönder
+        // req.user diyerek kullanıcıya erişebiliriz çünkü önceki protect middleware'inde zaten kullanıcıyı almıştık.
+
+        if (!roles.includes(req.user.role)) {
+            return res.status(403).send({
+                success: false,
+                message: "Bu işlem için yetkiniz yok (rol yetersiz.)"
+            })
+        }
+
+        // 2) Eğer yetkisi var ise middleware'den geçilmesine izin ver
+
+        next();
+
+
+    }
+
+
+// ------------------------------------------------------------------------------------
+// AUTH FONKSİYONLARI
+
 export const register = async (req, res) => {
     try {
 
@@ -215,4 +242,19 @@ export const login = async (req, res) => {
 
     // Eğer üstteki bütün kontrollerden geçildiyse o zaman yeni bir JWT oluştur ve kullanıcıya gönder (buna kullanıcı girişi deniyor)
     createAndSendToken(user, 200, res);
+}
+
+
+
+export const logout = async (req, res) => {
+    try {
+        res.clearCookie('jwt').status(200).json({ success: true, message: 'Oturumunuz kapatıldı.' })
+    }
+    catch (err) {
+        res.status(500).send({
+            success: false,
+            message: 'Çıkış yapılırken hata oluştu.',
+            data: err
+        })
+    }
 }
