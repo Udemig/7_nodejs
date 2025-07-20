@@ -8,6 +8,8 @@ import cookieParser from 'cookie-parser';
 //dotenv kütüphanesini çevre değişkenlerine (environmental variables) eklemek için
 dotenv.config()
 
+console.log("DOTENV KÜTÜPHANESİ ÇALIŞTI VE DEĞERLERİ GETİRDİ: ", process.env.MAIL_USER, process.env.MAIL_PASS)
+
 
 // express sunucu örneğini al
 const app = express();

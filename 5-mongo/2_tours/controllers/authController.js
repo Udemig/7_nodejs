@@ -1,6 +1,8 @@
 import User from "../models/userModel.js";
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
+import sendMail from "../utils/sendMail.js";
+import crypto from 'crypto'
 
 
 // Token oluşturma fonksiyonu (kullanıcı, bu tokeni bize geri göndererek, giriş yapmış olduğunu kanıtlayacak)
@@ -122,6 +124,32 @@ export const protect = async (req, res, next) => {
     }
 
 
+    //4) Token verildikten sonra kullanıcı hiç şifre değiştirmiş mi kontrol et
+
+    if (activeUser.passChangedAt) {
+
+        // şifrenin ne zaman değiştirildiğini öğren
+        const passChangedSeconds = parseInt(
+            activeUser.passChangedAt.getTime() / 1000
+        )
+
+        // 20 Temmuz 2025 => 1970 - 2 milyon saniye
+        // 21 Ağustos 2025 => 1970 - 2 milyon 100 bin saniye
+
+        // şifrenin değişitrilme tarihi ile jwtnin oluşturulma tarihini sayı cinsinden kıyasla
+        // eğer şifre değiştirme tarihi jwt oluşturma tarihinden daha büyükse (jwt oluşturulduktan sonra şifre değiştirilmişse) hata gönder
+
+        if (passChangedSeconds > decoded.iat) {
+            return res.status(401).send({
+                success: false,
+                message: "Yakın zamanda şifreniz değiştirildi, lütfen tekrar giriş yapınız."
+            })
+        }
+
+
+    }
+
+
     // req.user değerini bulduğumuz kullanıcı olarak belirleyelim ki bir sonraki her istekte tekrar find yapmak zorunda kalmayalım
     req.user = activeUser;
 
@@ -187,8 +215,6 @@ export const register = async (req, res) => {
         })
     }
 }
-
-
 
 
 export const login = async (req, res) => {
@@ -257,4 +283,180 @@ export const logout = async (req, res) => {
             data: err
         })
     }
+}
+
+
+// ----------- ŞİFRE UNUTMA FONKSİYONLARI
+
+export const forgotPassword = async (req, res) => {
+    try {
+        // epostaya göre kullanıcı hesabına eriş
+
+        // 1) veritabanında kullanıcının emailine sahip birisi var mı bak
+        const user = await User.findOne({ email: req.body.email })
+
+        // 2) eğer böyle bir kullanıcı yoksa hata gönder
+
+        if (!user) return res.status(404).send({ success: false, message: "Bu mail adresiyle kayıtlı kullanıcı yok." })
+
+        // 3) Şifre sıfırlama tokeni oluştur
+        const resetToken = user.createResetToken();
+
+        // 4) güncellemeleri veritabanına kaydedelim ama veri doğrulaması olmadan
+        await user.save({ validateBeforeSave: false })
+
+        // 5) tokeni kullanarak kullanıcının şifre sıfırlayabileceği endpointe istek atılacak bir link oluştur
+        const şifreSıfırlamaLinki = `${req.protocol}://${req.headers.host}/api/users/reset-password/${resetToken}`
+
+        // 6) oluşturulan linki kullanıcıya mail olarak gönder
+        await sendMail({
+            email: user.email,
+            subject: "Şifre sıfırlama bağlantınız (15dk)",
+            text: resetToken,
+            html:
+                `
+            <h2>Merhaba ${user.name}</h2>
+            <p>
+                <b>${user.email}</b> e-posta adresine bağlı mongotours hesabı için şifre sıfırlama bağlantısı oluşturuldu.
+            </p>
+
+            <a href="${şifreSıfırlamaLinki}">${şifreSıfırlamaLinki}</a>
+
+            <p>Yeni şifrenizin içinde bulunduğu bir body ile yukarıdaki bağlantıya <b>PATCH</b> isteği atınız.</p>
+
+            <p><b>Saygılarımızla, MongoTours</b></p>
+            `
+        })
+
+        // 7) client'a cevap gönder
+        res.status(200).send({ success: true, message: "Şifre yenileme e-postanız gönderildi." })
+
+    }
+    catch (err) {
+        res.status(500).send({ success: false, message: err.message })
+    }
+
+    //TODO: Kullanıcıya özel bir tokene sahip mail gönder
+}
+
+
+export const resetPassword = async (req, res) => {
+    try {
+
+        // gelen tokenden yola çıkarak kullanıcıyı bul
+
+        const token = req.params.token;
+
+        // 2) elimizdeki token şifrelenmemiş, ve veritabanında tutulan ise hashlenmiş (şifrelenmiş) olduğu için
+        // tokenin doğru olup olmadığını görebilmek adına, elimizdeki tokeni hashleyip ikisini birbiriyle kıyas edeceğiz.
+
+        const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
+
+        // Veritabanında hashlediğimiz tokene sahip kullanıcı var mı bak 
+        // (Token geçerli mi yoksa birisi yalandan rastgele token mi giriyor?)
+
+        const user = await User.findOne({
+            // tokenleri uyuşan kullanıcı var mı?
+            passResetToken: hashedToken,
+
+            // tokenin bitme tarihi şuanki tarihten daha büyükse(henüz o tarihe gelmediysek) kabul et, geldiysek etme
+            passResetExpires: { $gt: Date.now() }
+        })
+
+        if (!user) {
+            return res.status(403).send({
+                success: false,
+                message: "Şifre sıfırlama tokeninin süresi dolmuş veya geçersiz."
+            })
+        }
+
+        // 5) Eğer buraya kadar hiçbir sorun yoksa (kullanıcı varsa, token doğruysa ve süresi geçmemişse
+        // kullanıcının bilgilerini artık güncelleyebilirsin.
+
+        user.password = req.body.newPass;
+        user.passwordConfirm = req.body.newPass;
+        user.passResetToken = undefined;
+        user.passResetExpires = undefined;
+
+
+        // kullanıcıyı kaydet
+
+        await user.save();
+
+
+        return res.status(200).json({ success: true, message: "Şifreniz başarıyla güncellendi." })
+
+    } catch (error) {
+
+
+        return res.status(500).send({ success: false, error: error.message })
+
+
+    }
+}
+
+// ------------ ŞİFRE DEĞİŞTİRME FONKSİYONU
+
+export const updatePassword = async (req, res) => {
+
+    // kullanıcı bilgilerini al
+
+    const user = req.user;
+
+    // 1) kullanıcı yoksa ya da hesabı banlıysa hata gönder
+
+    if (!user || !user.active) {
+        return res.status(404).send({
+            success: false,
+            message: "Şifresini değiştirmeye çalıştığınız hesap yok ya da askıya alınmış."
+        })
+    }
+
+    // 2) gelen mevcut şifreyi teyit et, doğru mu yoksa yanlış mı?
+
+    const passMatch = await user.correctPass(req.body.currentPass, user.password);
+
+    // a) Kullanıcının girdiği şifre ile veritabanındaki eşleşmiyorsa hata gönder.
+    if (!passMatch) {
+        return res.status(403).send({
+            success: false,
+            message: "Girdiğiniz mevcut şifre hatalı"
+        })
+    }
+
+    // 3) doğruysa eğer yeni şifreyi veritabanına kaydet
+
+    user.password = req.body.newPass;
+    user.passwordConfirm = req.body.newPass;
+
+    // şifresini güncellediğim kullanıcı modelini kaydet
+    await user.save();
+
+
+
+
+    // 4) isteğe bağlı olarak kullanıcıya şifre değişimini bildilendirmek için mail gönderebiliriz
+
+    await sendMail({
+        email: user.email,
+        subject: "MongoTours Hesap Şifreniz Güncellendi",
+        text: "Bilgilendirme E-postası",
+        html:
+            `
+        <h1>Hesap Bilgileriniz Güncellendi.</h1>
+        <p>Merhaba, ${user.name}</p>
+        <p>Hesap şifrenizin başarıyla güncellendiğini bildiririz. 
+        Bu değişiklik size ait değilse lütfen destekle iletişime geçiniz.</p>
+
+        <p>Saygılarımızla</p>
+        <p><b>MongoTours Ekibi</b></p>
+        `
+    })
+
+
+    res.status(201).json({
+        success: true,
+        message: "Şifreniz başarıyla değiştirildi, tekrar giriş yapabilirsiniz."
+    })
+
 }

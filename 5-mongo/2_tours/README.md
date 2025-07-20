@@ -48,3 +48,22 @@ ey123132.343jgfrt.464jkwe
  ORJ. ŞİFRE =>     HASHLENMİŞ ŞİFRE       =>   SALTLANMIŞ ŞİFRE
 "furkan123" => "123123asdkfgh59!üğ-/_2^+" => "asdppwe1230049549#>#$#$½$½§"
 "furkan123" => "123123asdkfgh59!üğ-/_2^+" => "1923985#asd954571230sadasdlfdofgf"
+
+
+
+# Şifre Değiştirme
+
+Şifre Değiştirme İki Farklı Yöntemden Oluşur:
+
+
+## 1. Şifremi Unuttum (Forgot Password)
+
+Kullanıcının şifresini unuttuğu için giriş yapamadığı durumları kapsayan olaydır.
+Bu rota protected olmamalıdır çünkü kullanıcı eğer giriş yapabilseydi zaten şifremi unuttum demesine gerek kalmazdı.
+
+1) Bu rotaya atılan istek, kullanıcının kaydolurken girdiği mail adresine özel bir tokene sahip bir e-posta gönderir
+2) Bu gönderme işlemini bir SSMP (E-posta Protokolü/Hizmeti) ile yapar, örn. Mailtrap, mailjson.
+3) Ardından kullanıcı, özel tokenli linki kullanarak bir PATCH isteği atarak şifresini değiştirme işlemini gerçekleştirebilir.
+
+
+## 2. Şifremi Değiştirmek İstiyorum (Change Password)
