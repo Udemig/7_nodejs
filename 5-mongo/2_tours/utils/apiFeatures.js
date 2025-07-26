@@ -50,7 +50,7 @@ class APIFeatures {
     pagination(){
         // 4) pagination - sayfalama
         const page = Number(this.params.page) || 1 // şuan kaçıncı sayfadayız
-        const limit = this.params.limit <= 30 ? Number(this.params.limit) : this.params.limit ? 30 : 10 //sayfa başına eleman sayısı
+        const limit = this.params.limit <= 30 ? Number(this.params.limit) : this.params.limit ? 30 : 20 //sayfa başına eleman sayısı
         const skip = (page - 1) * limit // limit çalışmadan önce atlayacağımız eleman sayısı
 
         this.query.skip(skip).limit(limit);

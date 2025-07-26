@@ -32,6 +32,7 @@ export const getAll = async (Model, req, res) => {
         return res.status(200).send({
             success: true,
             message: `${Model.modelName} koleksiyonundaki bütün veriler getirildi.`,
+            count: documents.length,
             data: documents
         })
 
@@ -74,5 +75,26 @@ export const getSingle = async (Model, req, res) => {
             message: "Bir hata oluştu",
             data: err
         })
+    }
+}
+
+
+// Belirli bir koleksiyona yeni bir döküman ekle
+
+export const createOne = async (Model, req, res) => {
+    try{
+
+        const newDocument = await Model.create(req.body);
+
+        res.status(201).json({
+            success: true,
+            message: `${Model.modelName} başarıyla oluşturuldu.`,
+            data: newDocument
+        })
+
+    }
+    catch(err){
+        console.log(err);
+        res.status(500).send({success:false, error: err})
     }
 }

@@ -16,9 +16,9 @@ const app = express();
 
 // mongo veritabanına bağlan
 mongoose
-    .connect('mongodb://localhost:27017/toursDB')
-    .then(()=>console.log("BAŞARILI!, veritabanıyla bağlantı kuruldu."))
-    .catch(err=>console.log('BAŞARISIZ, veritabanına bağlanırken hata oluştu.'))
+    .connect(process.env.MONGO_URL)
+    .then(()=>console.log("BAŞARILI!, MongoDB ile bağlantı kuruldu."))
+    .catch(err=>console.log("BAŞARISIZ, MongoDB'ye bağlanırken hata oluştu."))
 
 
 // MIDDLEWARELER

@@ -32,7 +32,7 @@ const tourSchema = new Schema(
         difficulty: {
             type: String,
             required: [true, 'Tur zorluk değerine sahip olmalıdır.'],
-            enum: ['easy', 'medium', 'hard']
+            enum: ['easy', 'medium', 'hard', "difficult"]
         },
 
         ratingsAverage: {
@@ -45,6 +45,11 @@ const tourSchema = new Schema(
         ratingsQuantity: {
             type: Number,
             default: 0
+        },
+
+        premium: {
+            type: Boolean,
+            default: false
         },
 
         price: {
@@ -167,6 +172,39 @@ tourSchema.pre('save', function(next){
     //bir sonraki adıma geçebilirsin
     next();
 })
+
+// ------------------------------------------------------
+// Aggregate Middleware
+// Raporlama işlemlerinden önce ve sonra çalıştırılan middlewarelere verilen genelgeçer isim
+
+// .pre(işlem) => işlem gerçekleşmeden ÖNCE çalışan middleware
+tourSchema.pre('aggregate', function(next){
+
+    // premium olan turların rapora dahil edilmemesi için aggregation pipeline'a başlangıç 
+    // adımı olarak premiumları çıkartan bir adım eklemeliyiz
+
+    // aggregation (rapor oluşturma) adımına geçmeden önce bütün premiumları rapor dizimden çıkart
+    this.pipeline().push({ $match: { premium: { $ne: true } } });
+
+    // bu middleware'in yapacağı işler bitti, bir sonrakine geçebilirsin
+    next()
+
+})
+
+
+// .post(işlem) => işlem gerçekleştikten SONRA çalışan middleware
+tourSchema.post('aggregate', function(doc,next){
+
+
+
+    console.log("İstatistik hesaplama işlemi bitti.", doc)
+
+    // bu middleware'in yapacağı işler bitti, bir sonrakine geçebilirsin
+    next()
+
+})
+
+
 
 
 
