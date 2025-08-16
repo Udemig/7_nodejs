@@ -38,7 +38,7 @@ const userSchema = new Schema(
     },
     phone: {
       type: Number,
-      required: [true, "Lütfen telefon numarası alanını doldurunuz."],
+      // required: [true, "Lütfen telefon numarası alanını doldurunuz."],
     },
   },
   { timestamps: true }

@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import authRouter from "./routes/authRoutes.js";
 import cookieParser from "cookie-parser";
-
+import cors from "cors";
 // dotenv kurulumu
 dotenv.config();
 
@@ -15,6 +15,15 @@ app.use(express.json());
 
 // İstekle gelen cookie'leri işle
 app.use(cookieParser());
+
+// Cors hatalarının önüne geçmek için header ekle
+app.use(
+  cors({
+    origin: "http://localhost:5174",
+    methods: ["GET", "POST", "PATCH", "PUT", "DELETE"],
+    credentials: true,
+  })
+);
 
 // Veri tabanı ile iletişime geç
 mongoose

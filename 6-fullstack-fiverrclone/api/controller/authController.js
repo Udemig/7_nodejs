@@ -29,6 +29,8 @@ const register = async (req, res) => {
     // Hata durumunda client'a cevap gönder
     const errorObject = error(400, "Kayıt işlemi sırasında bir hata oluştu");
 
+    console.log(err);
+
     return res
       .status(errorObject.status)
       .json({ message: errorObject.message });
@@ -37,6 +39,8 @@ const register = async (req, res) => {
 
 // Giriş Yap
 const login = async (req, res) => {
+  console.log(req.body);
+
   try {
     // Kullanıcıyı db içerisinde bul
     const user = await User.findOne({ username: req.body.username });
