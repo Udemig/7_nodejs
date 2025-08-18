@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import authRouter from "./routes/authRoutes.js";
+import gigRouter from "./routes/gigRoutes.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 // dotenv kurulumu
@@ -19,7 +20,7 @@ app.use(cookieParser());
 // Cors hatalarının önüne geçmek için header ekle
 app.use(
   cors({
-    origin: "http://localhost:5174",
+    origin: "http://localhost:5173",
     methods: ["GET", "POST", "PATCH", "PUT", "DELETE"],
     credentials: true,
   })
@@ -32,11 +33,14 @@ mongoose
     console.log(`⚡️Veri tabanına başarıyla bağlanıldı.`);
   })
   .catch((err) => {
-    console.log(`❌ Veri tabanına bağlanırken bir hata oluştu`);
+    console.log(`❌ Veri tabanına bağlanırken bir hata oluştu`, err);
   });
 
-// Routeları oluştur
+// Routeları oluştur (uygulamaya tanıt)
 app.use("/api/auth", authRouter);
+app.use("/api/gig", gigRouter);
+
+
 
 app.listen(process.env.PORT, () => {
   console.log(`Server 4044 portunda çalışıyor...`);

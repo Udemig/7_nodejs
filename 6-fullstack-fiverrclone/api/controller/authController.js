@@ -76,9 +76,15 @@ const login = async (req, res) => {
 
     // client'a cevap gönder
     res
+    // cookie SADECE TARAYICILARDA VARDIR
+    // mesela, APK uygulamalarda, ios uygulamalarında, bilgisayar uygulamalarında cookie yoktur.
+
+    // sameSite => frontend ile backend aynı URL'den yayınlanıyorsa varsayılan olarak true gelir fakat eğer frontend ile backend farklı URL'den yayınlanacaksa "none" dememiz gerekir.
       .cookie("token", token, { httpOnly: true, sameSite: "none" })
       .status(200)
-      .json({ message: "Giriş işlemi başarılı", user });
+      // mobil cihazlarda ve bilgisayar uygulamalarında da giriş yapılabilmesi için sadece cookie olarak göndermek yetmez, json cevabında da tokeni göndermek lazım
+      .json({ message: "Giriş işlemi başarılı", user, token });
+
   } catch (err) {
     // Hata durumunda client'a cevap gönder
     const errorObject = error(400, "Giriş işlemi sırasında bir hata oluştu");

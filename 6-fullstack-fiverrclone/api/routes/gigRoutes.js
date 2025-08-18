@@ -1,0 +1,26 @@
+import express from 'express';
+import protect from '../middlewares/protect.js';
+import { createGig, getAllGigs } from '../controller/gigController.js';
+
+
+
+// 1) Router oluşturma
+
+const router = express.Router();
+
+// 2) rotaları(endpoint) belirle
+
+router.route('/')
+
+    .get(
+        getAllGigs
+    )
+
+    .post(
+        // multer kullanmamız lazım çünkü coverImage ve images değerlerimiz resim istiyorlar, resim koymadan istek atamayız. Fakat test için "required: true" değerini kaldırabiliriz.
+        protect,
+        createGig
+    )
+
+
+export default router;
