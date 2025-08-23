@@ -16,14 +16,14 @@ const buildFilters = (query) => {
         if(query.max) filters.packagePrice.$lte = query.max;
     }
 
-    if(query.search) filters.title = { $regex: query.search, $options: 'i'} // insensitive (büyük-küçük harf duyarsız - ikisini de kabul ediyor)
+    if(query.search) filters.title = { $regex: query.search, $options: "i"} // insensitive (büyük-küçük harf duyarsız - ikisini de kabul ediyor)
 
     return filters;
 }
 
 
 
-
+// bütün gigleri çeken kontrolcü
 export const getAllGigs = async (req, res) => {
     try {
 
@@ -49,7 +49,7 @@ export const getAllGigs = async (req, res) => {
 
 }
 
-
+// yeni gig oluşturan fonksiyon
 export const createGig = async (req, res) => {
     try {
 
@@ -70,5 +70,27 @@ export const createGig = async (req, res) => {
     catch (err) {
         console.log(err)
         return res.status(500).send({ success: false, error: err })
+    }
+}
+
+// tek bir gigi çeken kontrolcü
+export const getGig = async (req,res) => {
+    try{
+        const gig = await Gig.findById(req.params.id).populate('user');
+
+        if(!gig) return res.status(404).send({ success: false, message: "Aradığınız hizmet bulunamadı."})
+
+        return res.status(200).send({
+            success:true,
+            message:"Hizmet verisi alındı.",
+            data: gig
+        })
+    }
+    catch(err){
+
+        return res.status(500).send({
+            success:false,
+            error: err
+        })
     }
 }

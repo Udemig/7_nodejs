@@ -1,6 +1,6 @@
 import express from 'express';
 import protect from '../middlewares/protect.js';
-import { createGig, getAllGigs } from '../controller/gigController.js';
+import { createGig, getAllGigs, getGig } from '../controller/gigController.js';
 
 
 
@@ -10,6 +10,7 @@ const router = express.Router();
 
 // 2) rotaları(endpoint) belirle
 
+// id gerektirmeyen rotalar
 router.route('/')
 
     .get(
@@ -21,6 +22,13 @@ router.route('/')
         protect,
         createGig
     )
+
+// id gerektiren rotalar
+
+router.route('/:id')
+
+    .get(getGig)
+    // .delete(protect, deleteGig)
 
 
 export default router;

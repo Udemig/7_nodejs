@@ -1,7 +1,19 @@
 import React from 'react'
 import { IoSearchOutline } from "react-icons/io5";
+import { useNavigate } from 'react-router-dom';
 
 const Hero = () => {
+
+  const navigate = useNavigate();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const text = e.target[0].value.trim();
+
+    navigate(`/search?query=${text}`)
+  }
+
   return (
     <div className=" bg-[#0a4226] text-white h-[40vh] px-6 py-5 flex flex-col justify-center items-center md:rounded-md">
       <div className='max-w-[600px]'>
@@ -9,7 +21,8 @@ const Hero = () => {
           Profesyonel iş gücünüzü <span>freelancer'larla</span> ölçeklendirin.
         </h1>
 
-        <form className='bg-white rounded-md w-full flex gap-5 mt-10'>
+        <form onSubmit={handleSubmit}
+        className='bg-white rounded-md w-full flex gap-5 mt-10'>
           <input 
           type="text" 
           placeholder='Hizmet ara...' 
