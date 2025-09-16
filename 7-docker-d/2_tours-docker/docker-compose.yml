@@ -1,0 +1,63 @@
+version: "3.9" # önce compose sürümünü belirleriz
+
+services:
+  # HİZMETLER
+  # -----------------------
+  # MONGODB Hizmeti
+  # -----------------------
+
+  mongo:
+    image: mongo:7.0 # mongodb imajı alıyoruz
+    container_name: mongo
+      # Mongo'nun 27017 portunu cihazımızın 27017 portuna bağlıyoruz
+      # Fakat bu sadece eğitim tarafı için ve inceleme için gerekir, normal projeyi yüklerken bu işlemi yapmayız çünkü zaten mongo ile express aynı ağda çalıştığından portu dışarıya açmaya gerek kalmaz.
+    ports:
+      - "27017:27017"
+      # Volume Bağlantısı
+      # Normalde bir docker konteynırı kapatılıp açıldığında Dockerfile'ın içindeki bütün kodlar tekrardan çalışır 
+      # VE konteynırın içindeki bütün dosyalar silinip tekrar kopyalanır.
+
+      #Fakat biz MongoDB dosyalarının dockerı kapatıp açtığımızda silinmesini istemeyiz.
+      # Bu yüzden "bu dosya kısmını elleme" anlamına gelen volume yapısı oluşturmamız gerekiyor.
+
+    volumes:
+      - mongo_data:/data/db # /data/db kısmı, dockerın otomatik silme işlemi tarafından dokunulmaz hale gelir.
+
+    # (OPSİYONEL) Basit sağlık kontrolü: "Mongo hazır mı?"
+    healthcheck:
+      # yürütülecek komut
+      test: [ "CMD", "mongosh", "--eval", "db.adminCommand('ping').ok" ] # Mongo'nun db çalışıyorsa cevap veren komutu
+
+      interval: 10s # Kodların yürütülmesi arası kaç sn bekleyeceğiz
+      timeout: 5s # Bütün kodlar bittiğinde kaç sn sonra vazgeçeceğiz
+      retries: 5 # Kodu kaç kez tekrar yürüteceğiz.
+
+  # -----------------------
+  # EXPRESS UYGULAMASI
+  # -----------------------
+  app:
+    build: . # . demek, bulunduğum klasörde bir Dockerfile var, onu alıp appimi onunla build et anlamına gelir.
+    container_name: app
+    ports:
+      - "3000:3000" # Host:3000 => Konteynır:3000 portuna bağla
+
+    # ortam değişkenleri
+    environment:
+      - MONGO_URL=mongodb://mongo:27017/toursDB
+      - JWT_SECRET = 123902183921saıdjasıdjsare435439!@!?23434
+      - JWT_EXP = 10m
+      - MAIL_USER = 94ccabe5883bab
+      - MAIL_PASS = c030c13565cedc
+
+    # App, mongo hazır olmadan başlamasın
+    depends_on:
+      mongo:
+        condition: service_healthy # mongo hizmeti sağlıklıysa çalıştır.
+
+    # Eğer uygulama çökerse otomatik tekrar ayağa kaldırma komutu
+    restart: unless-stopped # unless-stopped => kullanıcı durdurmadığı durumda(uygulama çökerek kapandıysa) yeniden başlat.
+
+# Volume'ü (mongo için ayırdığımız alanı) kalıcı hale getirir.
+# Konteynırı silsek bile mongodb'nin verileri içinde kalır.
+volumes:
+  mongo_data:
