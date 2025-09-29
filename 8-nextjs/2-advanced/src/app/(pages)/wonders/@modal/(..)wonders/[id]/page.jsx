@@ -1,6 +1,6 @@
 "use client";
 
-import { data } from "@/utils/constants";
+import { data } from "../../../../../../utils/constants";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 

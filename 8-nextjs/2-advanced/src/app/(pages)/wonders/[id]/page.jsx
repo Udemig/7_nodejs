@@ -1,4 +1,4 @@
-import { data } from "@/utils/constants";
+import { data } from "../../../../utils/constants";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -14,9 +14,15 @@ const Page = async ({ params }) => {
       <div className="w-3/4 lg:w-1/2 mx-auto">
         <Link href="/wonders">Geri</Link>
 
-        <h1 className="text-center text-5xl font-bold mt-10 mb-5">{item.name}</h1>
+        <h1 className="text-center text-5xl font-bold mt-10 mb-5">
+          {item.name}
+        </h1>
 
-        <Image src={item.src} alt={item.name} className="w-full aspect-square object-cover rounded-md" />
+        <Image
+          src={item.src}
+          alt={item.name}
+          className="w-full aspect-square object-cover rounded-md"
+        />
 
         <div className="my-10">
           <h3 className="text-lg">Fotoğrafçı</h3>
