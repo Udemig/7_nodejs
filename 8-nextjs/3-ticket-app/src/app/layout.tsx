@@ -32,18 +32,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} ${smooch.variable}  antialiased`}
-      >
+      <body className={`${geistSans.variable} ${geistMono.variable} ${smooch.variable}  antialiased`}>
         <div className="flex h-full">
           <Sidebar />
 
           <div className="min-h-screen w-full">
             <Header />
 
-            <main className="h-[calc(100vh-189px)] overflow-y-auto px-4 md:px-8 pb-10">
-              {children}
-            </main>
+            <main className="h-[calc(100vh-189px)] overflow-y-auto p-4 md:px-8 pb-10">{children}</main>
           </div>
         </div>
       </body>
