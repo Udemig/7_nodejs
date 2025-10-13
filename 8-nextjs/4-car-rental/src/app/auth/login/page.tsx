@@ -22,13 +22,13 @@ export default function LoginPage() {
       const result = await signIn("credentials", {
         email: formData.email,
         password: formData.password,
-        redirect: true,
-        callbackUrl: "/",
+        redirect: false,
       });
 
       if (result?.error) {
-        toast.error(result.error);
-      } else {
+        toast.error("Invalid email or password");
+        console.error("Login error:", result.error);
+      } else if (result?.ok) {
         toast.success("Successfully logged in!");
         router.push("/");
         router.refresh();
@@ -78,7 +78,7 @@ export default function LoginPage() {
                 required
                 value={formData.email}
                 onChange={handleChange}
-                className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2.5 text-gray-900 placeholder:text-gray-400 focus:border-[#3563E9] focus:outline-none focus:ring-1 focus:ring-[#3563E9]"
+                className="input"
                 placeholder="Enter your email"
               />
             </div>
@@ -99,7 +99,7 @@ export default function LoginPage() {
                 required
                 value={formData.password}
                 onChange={handleChange}
-                className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2.5 text-gray-900 placeholder:text-gray-400 focus:border-[#3563E9] focus:outline-none focus:ring-1 focus:ring-[#3563E9]"
+                className="input"
                 placeholder="Enter your password"
               />
             </div>
@@ -108,7 +108,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full rounded-lg bg-[#3563E9] px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#2952CC] focus:outline-none focus:ring-2 focus:ring-[#3563E9] focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+              className="submit-button"
             >
               {isLoading ? "Signing in..." : "Sign In"}
             </button>

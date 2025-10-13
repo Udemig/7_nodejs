@@ -3,12 +3,13 @@ import mongoose from "mongoose";
 declare global {
   // eslint-disable-next-line no-var
   var mongoose: {
-    conn: typeof mongoose | null;
-    promise: Promise<typeof mongoose> | null;
+    conn: typeof import("mongoose") | null;
+    promise: Promise<typeof import("mongoose")> | null;
   };
 }
 
-const MONGODB_URI = process.env.MONGODB_URI!;
+const MONGODB_URI =
+  process.env.MONGODB_URI! || "mongodb://localhost:27017/morent";
 
 if (!MONGODB_URI) {
   throw new Error(
@@ -32,9 +33,7 @@ async function connectDB() {
       bufferCommands: false,
     };
 
-    cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
-      return mongoose;
-    });
+    cached.promise = mongoose.connect(MONGODB_URI, opts);
   }
 
   try {

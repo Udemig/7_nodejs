@@ -102,7 +102,7 @@ export default function RegisterPage() {
                   required
                   value={formData.firstName}
                   onChange={handleChange}
-                  className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2.5 text-gray-900 placeholder:text-gray-400 focus:border-[#3563E9] focus:outline-none focus:ring-1 focus:ring-[#3563E9]"
+                  className="input"
                   placeholder="John"
                 />
               </div>
@@ -121,7 +121,7 @@ export default function RegisterPage() {
                   required
                   value={formData.lastName}
                   onChange={handleChange}
-                  className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2.5 text-gray-900 placeholder:text-gray-400 focus:border-[#3563E9] focus:outline-none focus:ring-1 focus:ring-[#3563E9]"
+                  className="input"
                   placeholder="Doe"
                 />
               </div>
@@ -143,7 +143,7 @@ export default function RegisterPage() {
                 required
                 value={formData.email}
                 onChange={handleChange}
-                className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2.5 text-gray-900 placeholder:text-gray-400 focus:border-[#3563E9] focus:outline-none focus:ring-1 focus:ring-[#3563E9]"
+                className="input"
                 placeholder="john.doe@example.com"
               />
             </div>
@@ -162,7 +162,7 @@ export default function RegisterPage() {
                 type="tel"
                 value={formData.phone}
                 onChange={handleChange}
-                className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2.5 text-gray-900 placeholder:text-gray-400 focus:border-[#3563E9] focus:outline-none focus:ring-1 focus:ring-[#3563E9]"
+                className="input"
                 placeholder="+1 (555) 000-0000"
               />
             </div>
@@ -183,7 +183,7 @@ export default function RegisterPage() {
                 required
                 value={formData.password}
                 onChange={handleChange}
-                className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2.5 text-gray-900 placeholder:text-gray-400 focus:border-[#3563E9] focus:outline-none focus:ring-1 focus:ring-[#3563E9]"
+                className="input"
                 placeholder="Minimum 6 characters"
               />
             </div>
@@ -204,7 +204,7 @@ export default function RegisterPage() {
                 required
                 value={formData.confirmPassword}
                 onChange={handleChange}
-                className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2.5 text-gray-900 placeholder:text-gray-400 focus:border-[#3563E9] focus:outline-none focus:ring-1 focus:ring-[#3563E9]"
+                className="input"
                 placeholder="Re-enter password"
               />
             </div>
@@ -213,7 +213,7 @@ export default function RegisterPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full rounded-lg bg-[#3563E9] px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#2952CC] focus:outline-none focus:ring-2 focus:ring-[#3563E9] focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+              className="submit-button"
             >
               {isLoading ? "Creating account..." : "Create Account"}
             </button>

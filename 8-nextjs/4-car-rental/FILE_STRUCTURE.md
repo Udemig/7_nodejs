@@ -37,18 +37,29 @@ This document shows the complete file structure of the authentication implementa
     │
     ├── components/
     │   ├── 📄 header.tsx                        # ✏️ UPDATED - Auth state UI
+    │   ├── 📄 header-auth-section.tsx           # ✨ NEW - Auth section
     │   ├── 📄 footer.tsx                        # (unchanged)
+    │   ├── 📄 car-card.tsx                      # ✨ NEW - Car card component
     │   └── 📄 providers.tsx                     # ✨ NEW - SessionProvider
     │
     ├── lib/
     │   ├── 📄 auth.ts                           # ✨ NEW - NextAuth config
-    │   └── 📄 mongodb.ts                        # ✨ NEW - DB connection
+    │   ├── 📄 mongodb.ts                        # ✨ NEW - DB connection
+    │   └── 📄 cars.ts                           # ✨ NEW - Car API functions
     │
     ├── models/
-    │   └── 📄 user.ts                           # ✨ NEW - User schema
+    │   ├── 📄 user.ts                           # ✨ NEW - User schema
+    │   └── 📄 car.ts                            # ✨ NEW - Car schema
     │
-    └── types/
-        └── 📄 next-auth.d.ts                    # ✨ NEW - TypeScript types
+    ├── types/
+    │   ├── 📄 next-auth.d.ts                    # ✨ NEW - TypeScript types
+    │   └── 📄 car.ts                            # ✨ NEW - Car interface
+    │
+    ├── utils/
+    │   └── 📄 car-helpers.ts                    # ✨ NEW - Car helper functions
+    │
+    └── scripts/
+        └── 📄 seedCars.ts                       # ✨ NEW - Database seeding
 ```
 
 ## Legend
@@ -300,14 +311,56 @@ await signIn("credentials", {
 });
 ```
 
+## Modular Code Structure
+
+The codebase follows a clean and modular architecture:
+
+### Components (`src/components/`)
+
+- **car-card.tsx** - Reusable car card component
+- **header.tsx** - Main navigation header
+- **header-auth-section.tsx** - Authentication UI section
+- **footer.tsx** - Footer component
+- **providers.tsx** - App-level providers
+
+### Types (`src/types/`)
+
+- **car.ts** - Car interface definition
+- **next-auth.d.ts** - NextAuth type extensions
+
+### Utils (`src/utils/`)
+
+- **car-helpers.ts** - Helper functions
+  - `getCarImageUrl()` - Generate Imagin.studio CDN URLs
+  - `getFuelCapacity()` - Get fuel capacity by type
+
+### Lib (`src/lib/`)
+
+- **cars.ts** - Car-related API functions
+  - `fetchCars()` - Server-side car fetching
+- **auth.ts** - NextAuth configuration
+- **mongodb.ts** - Database connection
+
+### Models (`src/models/`)
+
+- **car.ts** - Car Mongoose schema
+- **user.ts** - User Mongoose schema
+
+### API Routes (`src/app/api/`)
+
+- **cars/route.ts** - Car listing endpoint
+- **cars/[id]/route.ts** - Single car endpoint
+- **auth/[...nextauth]/route.ts** - NextAuth handler
+- **auth/register/route.ts** - User registration
+
 ## Summary
 
-- **Total New Files:** 16
-- **Updated Files:** 2
-- **Total Lines of Code:** ~800
+- **Total New Files:** 25+
+- **Updated Files:** 3
+- **Total Lines of Code:** ~1500+
 - **Dependencies Added:** 5
-- **API Endpoints Created:** 2
-- **Pages Created:** 2
+- **API Endpoints Created:** 4
+- **Pages Created:** 3
 - **Time to Setup:** ~5 minutes (with QUICK_START guide)
 
 ## Next Action Required

@@ -1,50 +1,60 @@
-import { NextAuthOptions } from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
+import NextAuth from "next-auth";
+import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import connectDB from "@/lib/mongodb";
-import User from "@/models/user";
+import User, { IUser } from "@/models/user";
+import type { Types } from "mongoose";
 
-export const authOptions: NextAuthOptions = {
+export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
-    CredentialsProvider({
+    Credentials({
       name: "Credentials",
       credentials: {
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials) {
+      authorize: async (credentials) => {
         if (!credentials?.email || !credentials?.password) {
-          throw new Error("Please enter email and password");
+          return null;
         }
 
-        await connectDB();
+        try {
+          await connectDB();
 
-        const user = await User.findOne({ email: credentials.email });
+          const user: IUser | null = await User.findOne({
+            email: credentials.email,
+          }).select("+password");
 
-        if (!user) {
-          throw new Error("No user found with this email");
+          if (!user || !user.password) {
+            return null;
+          }
+
+          const plainPassword = credentials.password as string;
+          const hashedPassword = user.password as unknown as string;
+          const isPasswordValid = await bcrypt.compare(
+            plainPassword,
+            hashedPassword
+          );
+
+          if (!isPasswordValid) {
+            return null;
+          }
+
+          return {
+            id: (user._id as Types.ObjectId).toString(),
+            email: user.email,
+            name: `${user.firstName} ${user.lastName}`,
+            image:
+              user.image ||
+              `https://ui-avatars.com/api/?background=3563E9&color=fff&name=${user.firstName}+${user.lastName}`,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            phone: user.phone,
+          };
+        } catch (error) {
+          console.error("Auth error:", error);
+          return null;
         }
-
-        const isPasswordValid = await bcrypt.compare(
-          credentials.password,
-          user.password
-        );
-
-        if (!isPasswordValid) {
-          throw new Error("Invalid password");
-        }
-
-        return {
-          id: user._id.toString(),
-          email: user.email,
-          name: `${user.firstName} ${user.lastName}`,
-          image:
-            user.image ||
-            `https://ui-avatars.com/api/?background=3563E9&color=fff&name=${user.firstName}+${user.lastName}`,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          phone: user.phone,
-        };
       },
     }),
   ],
@@ -59,9 +69,9 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
-        token.firstName = user.firstName;
-        token.lastName = user.lastName;
-        token.phone = user.phone;
+        token.firstName = (user as any).firstName;
+        token.lastName = (user as any).lastName;
+        token.phone = (user as any).phone;
       }
       return token;
     },
@@ -70,12 +80,12 @@ export const authOptions: NextAuthOptions = {
     async session({ session, token }) {
       if (session.user) {
         session.user.id = token.id as string;
-        session.user.firstName = token.firstName as string;
-        session.user.lastName = token.lastName as string;
-        session.user.phone = token.phone as string;
+        (session.user as any).firstName = token.firstName as string;
+        (session.user as any).lastName = token.lastName as string;
+        (session.user as any).phone = token.phone as string;
       }
       return session;
     },
   },
   secret: process.env.NEXTAUTH_SECRET,
-};
+});
