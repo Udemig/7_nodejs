@@ -1,11 +1,13 @@
-import NextAuth from "next-auth";
+import { Session, User } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import connectDB from "@/lib/mongodb";
-import User, { IUser } from "@/models/user";
+import UserModel, { IUser } from "@/models/user";
 import type { Types } from "mongoose";
+import { JWT } from "next-auth/jwt";
+import type { NextAuthOptions } from "next-auth";
 
-export const { handlers, signIn, signOut, auth } = NextAuth({
+export const authOptions: NextAuthOptions = {
   providers: [
     Credentials({
       name: "Credentials",
@@ -21,7 +23,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         try {
           await connectDB();
 
-          const user: IUser | null = await User.findOne({
+          const user: IUser | null = await UserModel.findOne({
             email: credentials.email,
           }).select("+password");
 
@@ -62,11 +64,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     signIn: "/auth/login",
   },
   session: {
-    strategy: "jwt",
+    strategy: "jwt" as const,
   },
   callbacks: {
     // access tokenın içerisine kaydedilecek veriler
-    async jwt({ token, user }) {
+    async jwt({ token, user }: { token: JWT; user: User }) {
       if (user) {
         token.id = user.id;
         token.firstName = (user as any).firstName;
@@ -77,7 +79,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
 
     // useSession hook'u ile alınacak veriler
-    async session({ session, token }) {
+    async session({ session, token }: { session: Session; token: JWT }) {
       if (session.user) {
         session.user.id = token.id as string;
         (session.user as any).firstName = token.firstName as string;
@@ -88,4 +90,4 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
   },
   secret: process.env.NEXTAUTH_SECRET,
-});
+};

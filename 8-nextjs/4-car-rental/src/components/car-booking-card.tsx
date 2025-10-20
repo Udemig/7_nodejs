@@ -4,12 +4,15 @@ import { FormEvent, useState } from "react";
 import { MapPin } from "lucide-react";
 import { Car } from "@/types/car";
 import { toast } from "react-toastify";
+import { useSession } from "next-auth/react";
+import Link from "next/link";
 
 interface CarBookingCardProps {
   car: Car;
 }
 
 export function CarBookingCard({ car }: CarBookingCardProps) {
+  const { data: session } = useSession();
   const [pickupDate, setPickupDate] = useState("");
   const [pickupTime, setPickupTime] = useState("10:00");
   const [returnDate, setReturnDate] = useState("");
@@ -39,8 +42,10 @@ export function CarBookingCard({ car }: CarBookingCardProps) {
         }),
       });
 
-      toast.success("Ödeme başarılı");
-      console.log(await res.json());
+      const data = await res.json();
+
+      // kullanıcınıyı ödeme sayfasına yönlendir
+      window.location.href = data.url;
     } catch (error) {
       toast.error("Ödeme anında bir hata oluştu");
     } finally {
@@ -64,10 +69,14 @@ export function CarBookingCard({ car }: CarBookingCardProps) {
         <h3 className="text-gray-900 font-semibold mb-4">Pickup Date & Time</h3>
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <label className="block text-sm font-bold text-gray-900 mb-2">
+            <label
+              htmlFor="pickup-date"
+              className="block text-sm font-bold text-gray-900 mb-2"
+            >
               Date
             </label>
             <input
+              id="pickup-date"
               type="date"
               value={pickupDate}
               onChange={(e) => setPickupDate(e.target.value)}
@@ -77,10 +86,14 @@ export function CarBookingCard({ car }: CarBookingCardProps) {
             />
           </div>
           <div>
-            <label className="block text-sm font-bold text-gray-900 mb-2">
+            <label
+              htmlFor="pickup-time"
+              className="block text-sm font-bold text-gray-900 mb-2"
+            >
               Time
             </label>
             <select
+              id="pickup-time"
               value={pickupTime}
               required
               onChange={(e) => setPickupTime(e.target.value)}
@@ -102,11 +115,15 @@ export function CarBookingCard({ car }: CarBookingCardProps) {
         <h3 className="text-gray-900 font-semibold mb-4">Return Date & Time</h3>
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <label className="block text-sm font-bold text-gray-900 mb-2">
+            <label
+              htmlFor="return-date"
+              className="block text-sm font-bold text-gray-900 mb-2"
+            >
               Date
             </label>
             <input
               type="date"
+              id="return-date"
               value={returnDate}
               required
               onChange={(e) => setReturnDate(e.target.value)}
@@ -115,10 +132,14 @@ export function CarBookingCard({ car }: CarBookingCardProps) {
             />
           </div>
           <div>
-            <label className="block text-sm font-bold text-gray-900 mb-2">
+            <label
+              htmlFor="return-time"
+              className="block text-sm font-bold text-gray-900 mb-2"
+            >
               Time
             </label>
             <select
+              id="return-time"
               value={returnTime}
               onChange={(e) => setReturnTime(e.target.value)}
               className="order-input"
@@ -168,10 +189,14 @@ export function CarBookingCard({ car }: CarBookingCardProps) {
 
       {/* Additional Notes */}
       <div className="mb-6">
-        <h3 className="text-gray-900 font-semibold mb-4">
+        <label
+          htmlFor="additional-notes"
+          className="text-gray-900 font-semibold mb-4 block"
+        >
           Additional Notes (Optional)
-        </h3>
+        </label>
         <textarea
+          id="additional-notes"
           className="order-input py-3 resize-none"
           rows={4}
           placeholder="Any special requests or notes"
@@ -181,7 +206,18 @@ export function CarBookingCard({ car }: CarBookingCardProps) {
       </div>
 
       {/* Book Button */}
-      <button className="submit-button">Rent Now</button>
+      {!session?.user ? (
+        <Link href="/auth/login">
+          <button className="submit-button">Login to Book</button>
+        </Link>
+      ) : (
+        <button
+          disabled={isLoading || !session?.user}
+          className="submit-button"
+        >
+          {isLoading ? "Loading..." : "Rent Now"}
+        </button>
+      )}
     </form>
   );
 }

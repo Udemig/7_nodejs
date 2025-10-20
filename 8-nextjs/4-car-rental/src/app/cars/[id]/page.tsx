@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { Metadata } from "next";
 import { fetchCarById } from "@/lib/cars";
 import { CarImagesViewer } from "@/components/car-images-viewer";
 import { CarInfoSection } from "@/components/car-info-section";
@@ -7,6 +8,37 @@ import { CarReviews } from "@/components/car-reviews";
 
 interface PageProps {
   params: Promise<{ id: string }>;
+}
+
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
+  const { id } = await params;
+  const car = await fetchCarById(id);
+
+  if (!car) {
+    return {
+      title: "Car Not Found - MORENT",
+    };
+  }
+
+  return {
+    title: `Rent ${car.make} ${car.modelName} - $${car.pricePerDay}/day | MORENT`,
+    description: `Rent ${car.make} ${car.modelName} ${car.year}. ${car.carType} with ${car.seats} seats, ${car.transmission} transmission, ${car.fuelType} fuel. Book now from $${car.pricePerDay} per day.`,
+    keywords: [
+      `${car.make} rental`,
+      `${car.modelName} hire`,
+      `rent ${car.carType}`,
+      car.transmission,
+      car.fuelType,
+      "MORENT",
+    ],
+    openGraph: {
+      title: `Rent ${car.make} ${car.modelName} - MORENT`,
+      description: `${car.carType} with ${car.seats} seats from $${car.pricePerDay}/day`,
+      type: "website",
+    },
+  };
 }
 
 export default async function CarDetailPage({ params }: PageProps) {

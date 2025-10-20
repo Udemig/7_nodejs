@@ -16,9 +16,23 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "MORENT - Car Rental",
+  title: {
+    default: "MORENT - Premium Car Rental Service",
+    template: "%s | MORENT",
+  },
   description:
-    "Our vision is to provide convenience and help increase your sales business.",
+    "Our vision is to provide convenience and help increase your sales business. Rent cars at best prices with flexible rental periods.",
+  keywords: ["car rental", "rent a car", "MORENT", "vehicle hire"],
+  authors: [{ name: "MORENT" }],
+  robots: {
+    index: true,
+    follow: true,
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    siteName: "MORENT",
+  },
 };
 
 export default function RootLayout({

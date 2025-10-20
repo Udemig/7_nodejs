@@ -1,8 +1,31 @@
 import Link from "next/link";
+import { Metadata } from "next";
 import { Car } from "@/types/car";
 import { CarCard } from "@/components/car-card";
 import { fetchCars } from "@/lib/cars";
 import { getCarImageUrl } from "@/utils/car-helpers";
+import Image from "next/image";
+
+export const metadata: Metadata = {
+  title: "MORENT - Premium Car Rental Service | Rent Cars at Best Prices",
+  description:
+    "Find and rent your perfect car with MORENT. Discover our wide selection of luxury, sports, and family cars at competitive prices. Easy booking, flexible rental periods, and excellent service.",
+  keywords: [
+    "car rental",
+    "rent a car",
+    "car hire",
+    "luxury car rental",
+    "sports car rental",
+    "affordable car rental",
+    "MORENT",
+  ],
+  openGraph: {
+    title: "MORENT - Premium Car Rental Service",
+    description:
+      "The best platform for car rental. Ease of doing a car rental safely and reliably at a low price.",
+    type: "website",
+  },
+};
 
 export default async function Home() {
   const { popularCars, recommendedCars } = await fetchCars();
@@ -27,10 +50,13 @@ export default async function Home() {
               </button>
             </div>
             <div className="absolute bottom-0 right-0 w-[55%] sm:w-[50%] h-auto">
-              <img
+              <Image
+                width={100}
+                height={100}
                 src={getCarImageUrl("Porsche", "991", "05")}
                 alt="Sports Car"
                 className="w-full h-auto object-contain"
+                unoptimized
               />
             </div>
           </div>
@@ -45,7 +71,7 @@ export default async function Home() {
                 Providing cheap car rental services and safe and comfortable
                 facilities.
               </p>
-              <button className="bg-[#54A6FF] hover:bg-[#3B8FD9] transition-colors px-6 py-3 rounded-lg text-white font-semibold text-sm">
+              <button className="bg-[#3563E9] hover:bg-[#2952CC] transition-colors px-6 py-3 rounded-lg text-white font-semibold text-sm">
                 Rental Car
               </button>
             </div>
@@ -72,10 +98,14 @@ export default async function Home() {
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-sm font-bold text-gray-900 mb-2">
+                  <label
+                    htmlFor="locations"
+                    className="block text-sm font-bold text-gray-900 mb-2"
+                  >
                     Locations
                   </label>
                   <select
+                    id="locations"
                     disabled
                     className="w-full text-sm text-gray-400 bg-white border-0 focus:outline-none cursor-not-allowed"
                   >
@@ -83,10 +113,14 @@ export default async function Home() {
                   </select>
                 </div>
                 <div className="sm:border-l sm:border-gray-200 sm:pl-4">
-                  <label className="block text-sm font-bold text-gray-900 mb-2">
+                  <label
+                    htmlFor="date"
+                    className="block text-sm font-bold text-gray-900 mb-2"
+                  >
                     Date
                   </label>
                   <select
+                    id="date"
                     disabled
                     className="w-full text-sm text-gray-400 bg-white border-0 focus:outline-none cursor-not-allowed"
                   >
@@ -94,10 +128,14 @@ export default async function Home() {
                   </select>
                 </div>
                 <div className="sm:border-l sm:border-gray-200 sm:pl-4">
-                  <label className="block text-sm font-bold text-gray-900 mb-2">
+                  <label
+                    htmlFor="time"
+                    className="block text-sm font-bold text-gray-900 mb-2"
+                  >
                     Time
                   </label>
                   <select
+                    id="time"
                     disabled
                     className="w-full text-sm text-gray-400 bg-white border-0 focus:outline-none cursor-not-allowed"
                   >
@@ -109,7 +147,10 @@ export default async function Home() {
 
             {/* Swap Button */}
             <div className="flex-shrink-0">
-              <button className="w-14 h-14 bg-[#3563E9] rounded-lg flex items-center justify-center text-white hover:bg-[#2952CC] transition-colors shadow-md">
+              <button
+                aria-label="Swap pick-up and drop-off locations"
+                className="w-14 h-14 bg-[#3563E9] rounded-lg flex items-center justify-center text-white hover:bg-[#2952CC] transition-colors shadow-md"
+              >
                 <svg
                   className="w-6 h-6"
                   fill="none"
@@ -136,10 +177,14 @@ export default async function Home() {
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-sm font-bold text-gray-900 mb-2">
+                  <label
+                    htmlFor="dropoff-locations"
+                    className="block text-sm font-bold text-gray-900 mb-2"
+                  >
                     Locations
                   </label>
                   <select
+                    id="dropoff-locations"
                     disabled
                     className="w-full text-sm text-gray-400 bg-white border-0 focus:outline-none cursor-not-allowed"
                   >
@@ -147,10 +192,14 @@ export default async function Home() {
                   </select>
                 </div>
                 <div className="sm:border-l sm:border-gray-200 sm:pl-4">
-                  <label className="block text-sm font-bold text-gray-900 mb-2">
+                  <label
+                    htmlFor="dropoff-date"
+                    className="block text-sm font-bold text-gray-900 mb-2"
+                  >
                     Date
                   </label>
                   <select
+                    id="dropoff-date"
                     disabled
                     className="w-full text-sm text-gray-400 bg-white border-0 focus:outline-none cursor-not-allowed"
                   >
@@ -158,10 +207,14 @@ export default async function Home() {
                   </select>
                 </div>
                 <div className="sm:border-l sm:border-gray-200 sm:pl-4">
-                  <label className="block text-sm font-bold text-gray-900 mb-2">
+                  <label
+                    htmlFor="dropoff-time"
+                    className="block text-sm font-bold text-gray-900 mb-2"
+                  >
                     Time
                   </label>
                   <select
+                    id="dropoff-time"
                     disabled
                     className="w-full text-sm text-gray-400 bg-white border-0 focus:outline-none cursor-not-allowed"
                   >
@@ -214,7 +267,7 @@ export default async function Home() {
             >
               Show more car
             </Link>
-            <span className="text-gray-400 text-sm">120 Car</span>
+            <span className="text-gray-800 text-sm">120 Car</span>
           </div>
         </div>
       </div>
