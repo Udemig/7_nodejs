@@ -1,0 +1,10 @@
+import express from "express";
+import deliveryController from "./delivery.controller.js";
+
+const router = express.Router();
+
+router.post("/handler1", deliveryController.handler1);
+router.post("/handler2", deliveryController.handler2);
+router.post("/handler3", deliveryController.handler3);
+
+export default router;

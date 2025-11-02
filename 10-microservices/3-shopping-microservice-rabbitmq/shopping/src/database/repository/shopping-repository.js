@@ -31,7 +31,7 @@ class ShoppingRepository {
         if (cartItems.length > 0) {
           //process Order
           cartItems.map((item) => {
-            amount += parseInt(item.product.price) * parseInt(item.unit);
+            amount += parseInt(item.price) * parseInt(item.unit);
           });
 
           const orderId = uuidv4();
