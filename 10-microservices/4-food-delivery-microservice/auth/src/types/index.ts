@@ -21,3 +21,10 @@ export interface IUser {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface JWTPayload {
+  userId: string;
+  role: UserRole;
+  iat: number;
+  exp: number;
+}

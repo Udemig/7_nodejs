@@ -9,6 +9,12 @@ declare global {
       RATE_LIMIT_MAX_REQ: string;
     }
   }
+
+  namespace Express {
+    interface Request {
+      user?: IUser;
+    }
+  }
 }
 
 export {};

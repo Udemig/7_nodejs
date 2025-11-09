@@ -1,3 +1,5 @@
+import type { JWTPayload } from "./index.ts";
+
 declare global {
   namespace NodeJS {
     interface ProcessEnv {
@@ -7,6 +9,12 @@ declare global {
       JWT_SECRET: string;
       RATE_LIMIT_WINDOW: string;
       RATE_LIMIT_MAX_REQ: string;
+    }
+  }
+
+  namespace Express {
+    interface Request {
+      user?: JWTPayload;
     }
   }
 }

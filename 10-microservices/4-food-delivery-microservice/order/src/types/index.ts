@@ -5,3 +5,12 @@ export type RouteParams = (
   res: Response,
   next: NextFunction
 ) => Promise<void>;
+
+export type UserRole = "customer" | "restaurant_owner" | "courier" | "admin";
+
+export interface JWTPayload {
+  userId: string;
+  role: UserRole;
+  iat: number;
+  exp: number;
+}

@@ -25,6 +25,7 @@ export const loginSchema = z.object({
 
 // Şemalar üzerinden tip çıkartabiliyoruz
 export type RegisterInput = z.infer<typeof registerSchema>;
+export type LoginInput = z.infer<typeof loginSchema>;
 
 // Bir şema ve veri alıp verinin şemaya uygun olup olmadığını kontrol eden fonksiyon
 export async function validateDTO<T>(

@@ -1,25 +1,65 @@
 import { catchAsync } from "./utils/index.js";
 import authService from "./auth.service.js";
-import { validateDTO, registerSchema } from "./auth.dto.js";
+import { validateDTO, registerSchema, loginSchema } from "./auth.dto.js";
 
 class AuthController {
   register = catchAsync(async (req, res, next) => {
     // client'dan gelen verinin doğru formatta ve eksiksiz olduğundan emin ol
     const body = await validateDTO(registerSchema, req.body);
 
+    // servis methodunu çalıştır
+    const result = await authService.register(body);
+
+    // cookie oluştur
+    res.cookie("token", result.token, {
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000,
+    });
+
     // client'a cevap gönder
     res.status(201).json({
       status: "success",
       message: "Kullanıcı başarıyla oluşturuldu",
-      body,
+      data: result,
     });
   });
 
-  login = catchAsync(async (req, res, next) => {});
+  login = catchAsync(async (req, res, next) => {
+    // client'dan gelen verinin doğru formatta ve eksiksiz olduğundan emin ol
+    const body = await validateDTO(loginSchema, req.body);
 
-  logout = catchAsync(async (req, res, next) => {});
+    // servis methodunu çağıralım
+    const result = await authService.login(body);
 
-  profile = catchAsync(async (req, res, next) => {});
+    // cookie oluştur
+    res.cookie("token", result.token, {
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000,
+    });
+
+    // client'a cevap gönder
+    res.status(200).json({
+      status: "success",
+      message: "Kullanıcı hesabına giriş yapıldı",
+      data: result,
+    });
+  });
+
+  logout = catchAsync(async (req, res, next) => {
+    res.clearCookie("token");
+    res.status(200).json({
+      status: "success",
+      message: "Hesabınızdan çıkış yapıldı",
+    });
+  });
+
+  profile = catchAsync(async (req, res, next) => {
+    res.status(200).json({
+      status: "success",
+      message: "Kullanıcı profil bilgileri",
+      data: req.user,
+    });
+  });
 }
 
 export default new AuthController();
