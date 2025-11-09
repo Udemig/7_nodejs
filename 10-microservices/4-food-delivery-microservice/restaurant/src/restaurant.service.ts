@@ -1,8 +1,9 @@
 import type {
+  CreateMenuItemInput,
   CreateRestaurantInput,
   QueryParamsInput,
 } from "./restaurant.dto.js";
-import Restaurant from "./restaurant.model.js";
+import Restaurant, { MenuItem } from "./restaurant.model.js";
 
 // Business Logic'i yöneticek ve veritabanı ile iletişime geç
 class RestaurantService {
@@ -52,6 +53,23 @@ class RestaurantService {
     const newRestaurant = await Restaurant.create({ ...body, ownerId });
 
     return newRestaurant;
+  }
+
+  // yeni bir menü ürünü oluştur
+  async createMenuItem(body: CreateMenuItemInput, restaurantId: string) {
+    const newItem = await MenuItem.create({ ...body, restaurantId });
+    return newItem;
+  }
+
+  // bir restoranın menüsünü getir
+  async getRestaurantMenu(restaurantId: string, category?: string) {
+    const filters: { restaurantId: string; category?: string } = {
+      restaurantId,
+    };
+
+    if (category) filters.category = category;
+
+    return await MenuItem.find(filters);
   }
 }
 

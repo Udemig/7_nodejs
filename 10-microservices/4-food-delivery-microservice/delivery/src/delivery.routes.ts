@@ -4,13 +4,27 @@ import { authenticate, authorize } from "./delivery.middleware.js";
 
 const router = express.Router();
 
-router.post(
-  "/handler1",
+router.get(
+  "/",
   authenticate,
-  authorize(["courier"]),
-  deliveryController.handler1
+  authorize(["admin", "courier"]),
+  deliveryController.getAvailableDeliveries
 );
-router.post("/handler2", deliveryController.handler2);
-router.post("/handler3", deliveryController.handler3);
+
+router.post(
+  "/:orderId/accept",
+  authenticate,
+  authorize(["admin", "courier"]),
+  deliveryController.acceptDelivery
+);
+
+router.patch(
+  "/:orderId/status",
+  authenticate,
+  authorize(["admin", "courier"]),
+  deliveryController.updateDeliveryStatus
+);
+
+router.get("/:orderId/track", authenticate, deliveryController.trackDelivery);
 
 export default router;

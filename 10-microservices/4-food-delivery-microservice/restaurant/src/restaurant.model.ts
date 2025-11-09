@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-import type { IRestaurant } from "./types/index.js";
+import type { IMenuItem, IRestaurant } from "./types/index.js";
 
 const restaurantSchema = new Schema<IRestaurant>(
   {
@@ -37,4 +37,43 @@ const restaurantSchema = new Schema<IRestaurant>(
   }
 );
 
+const menuItemSchema = new Schema<IMenuItem>(
+  {
+    restaurantId: { type: Schema.Types.ObjectId, required: true, trim: true },
+    name: { type: String, required: [true, "Ad zorunludur"], trim: true },
+    description: {
+      type: String,
+      required: [true, "Açıklama zorunludur"],
+      trim: true,
+    },
+    price: { type: Number, required: [true, "Fiyat zorunludur"], min: 0 },
+    category: {
+      type: String,
+      required: [true, "Kategori zorunludur"],
+      trim: true,
+    },
+    imageUrl: { type: String, default: null },
+    ingredients: { type: [String], default: [] },
+    allergens: { type: [String], default: [] },
+    isVegetarian: { type: Boolean, default: false },
+    isAvailable: { type: Boolean, default: true },
+    preparationTime: {
+      type: Number,
+      required: [true, "Hazırlama süresi zorunludur"],
+      min: 0,
+    },
+  },
+  {
+    timestamps: true,
+    toJSON: {
+      transform: (doc: any, ret: any) => {
+        ret.id = ret._id;
+        delete ret._id;
+        delete ret.__v;
+      },
+    },
+  }
+);
+
+export const MenuItem = mongoose.model<IMenuItem>("MenuItem", menuItemSchema);
 export default mongoose.model<IRestaurant>("Restaurant", restaurantSchema);

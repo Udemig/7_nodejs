@@ -1,5 +1,5 @@
 import type { NextFunction, Request, Response } from "express";
-import { Document } from "mongoose";
+import { Document, Types } from "mongoose";
 
 export type RouteParams = (
   req: Request,
@@ -29,6 +29,22 @@ export interface IRestaurant extends Document {
   isActive: boolean;
   isOpen: boolean;
   ownerId: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface IMenuItem extends Document {
+  restaurantId: Types.ObjectId;
+  name: string;
+  description: string;
+  price: number;
+  category: string;
+  imageUrl: string;
+  ingredients: string[];
+  allergens: string[];
+  isVegetarian: boolean;
+  isAvailable: boolean;
+  preparationTime: number;
   createdAt: Date;
   updatedAt: Date;
 }

@@ -44,9 +44,27 @@ export const queryParamsSchema = z.object({
     .optional(),
 });
 
+// Menüye yeni bir ürün eklerken client'dan gelen veriyi kontrol eden şema
+export const createMenuItemSchema = z.object({
+  name: z.string().min(2, "Ad en az 2 karakter olmalıdır"),
+  description: z.string().min(10, "Açıklama en az 10 karakter olmalıdır"),
+  price: z.number().min(0, "Fiyat 0'dan küçük olamaz"),
+  category: z.string().min(2, "Kategori en az 2 karakter olmalıdır"),
+  imageUrl: z.url("Geçerli bir resim URL'si giriniz").optional(),
+  ingredients: z.array(z.string()).default([]),
+  allergens: z.array(z.string()).default([]),
+  isVegetarian: z.boolean().default(false),
+  isAvailable: z.boolean().default(true),
+  preparationTime: z
+    .number()
+    .min(5, "Hazırlama süresi en az 5 dakika olmalıdır")
+    .max(120, "Hazırlama süresi en fazla 120 dakika olmalıdır"),
+});
+
 // İnfer type
 export type CreateRestaurantInput = z.infer<typeof createRestaurantSchema>;
 export type QueryParamsInput = z.infer<typeof queryParamsSchema>;
+export type CreateMenuItemInput = z.infer<typeof createMenuItemSchema>;
 
 // Bir şema ve veri alıp verinin şemaya uygun olup olmadığını kontrol eden fonksiyon
 export async function validateDTO<T>(
