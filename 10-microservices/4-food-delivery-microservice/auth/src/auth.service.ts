@@ -3,9 +3,23 @@ import User from "./auth.model.js";
 import type { IUser } from "./types/index.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import rabbitmqService from "./rabbitmq.service.js";
 
 // Business Logic'i yöneticek ve veritabanı ile iletişime geç
 class AuthService {
+  private initialized: boolean = false;
+
+  constructor() {
+    this.initialize();
+  }
+
+  private async initialize() {
+    if (this.initialized) return;
+
+    await rabbitmqService.initialize();
+    this.initialized = true;
+  }
+
   private generateToken(user: IUser): string {
     const token = jwt.sign(
       { userId: user._id, role: user.role },
@@ -30,6 +44,11 @@ class AuthService {
 
     // kullanıcıyı oluştur
     const user = await User.create({ ...body, password: hashedPassword });
+
+    // eğer oluşturulan hesap kurye hesabı ise delivery servisine mesaj gönder
+    if (user.role === "courier") {
+      await rabbitmqService.publishMessage("courier.created", user);
+    }
 
     // token oluştur
     const token = this.generateToken(user);

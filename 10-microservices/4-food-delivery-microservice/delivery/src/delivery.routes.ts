@@ -22,7 +22,7 @@ router.patch(
   "/:orderId/status",
   authenticate,
   authorize(["admin", "courier"]),
-  deliveryController.updateDeliveryStatus
+  deliveryController.updateDelivery
 );
 
 router.get("/:orderId/track", authenticate, deliveryController.trackDelivery);

@@ -1,10 +1,22 @@
 import z from "zod";
 
+// sipariş durumunu güncelleme dto
+export const deliveryUpdateSchema = z.object({
+  status: z.enum(["on_the_way", "delivered", "cancelled"]),
+  location: z
+    .object({
+      lat: z.number(),
+      lon: z.number(),
+    })
+    .optional(),
+  notes: z.string().optional(),
+});
+
+// infer
+export type DeliveryUpdate = z.infer<typeof deliveryUpdateSchema>;
+
 // Bir şema ve veri alıp verinin şemaya uygun olup olmadığını kontrol eden fonksiyon
-export async function validateDTO<T>(
-  schema: z.ZodSchema<T>,
-  data: unknown
-): Promise<T> {
+export function validateDTO<T>(schema: z.ZodSchema<T>, data: unknown): T {
   try {
     return schema.parse(data);
   } catch (error) {

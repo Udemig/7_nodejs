@@ -1,4 +1,4 @@
-import type { Location, IDelivery } from "./types/index.js";
+import type { Location, IDelivery, ICourier } from "./types/index.js";
 import mongoose, { Schema } from "mongoose";
 
 const locationSchema = new Schema<Location>(
@@ -12,7 +12,7 @@ const locationSchema = new Schema<Location>(
 const deliverySchema = new Schema<IDelivery>(
   {
     orderId: { type: String, required: [true, "Sipariş id'si zorunludur"] },
-    courierId: { type: String, required: [true, "Kurye id'si zorunludur"] },
+    courierId: { type: String, default: null },
     status: {
       type: String,
       required: [true, "Durum zorunludur"],
@@ -43,4 +43,31 @@ const deliverySchema = new Schema<IDelivery>(
   }
 );
 
+const courierSchema = new Schema<ICourier>(
+  {
+    firstName: { type: String, required: [true, "Ad zorunludur"] },
+    lastName: { type: String, required: [true, "Soyad zorunludur"] },
+    email: { type: String, required: [true, "Email zorunludur"], unique: true },
+    phone: { type: String, required: [true, "Telefon zorunludur"] },
+    status: {
+      type: String,
+      required: [true, "Durum zorunludur"],
+      enum: ["available", "busy", "offline"],
+      default: "available",
+    },
+  },
+  {
+    timestamps: true,
+    toJSON: {
+      transform: (doc: any, ret: any) => {
+        ret.id = ret._id;
+        delete ret._id;
+        delete ret.__v;
+        delete ret.password;
+      },
+    },
+  }
+);
+
+export const Courier = mongoose.model<ICourier>("Courier", courierSchema);
 export default mongoose.model<IDelivery>("Delivery", deliverySchema);

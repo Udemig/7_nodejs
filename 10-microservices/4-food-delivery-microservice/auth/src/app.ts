@@ -8,6 +8,7 @@ import morgan from "morgan";
 import rateLimit from "express-rate-limit";
 import { errorMiddleware, notFoundMiddleware } from "./auth.middleware.js";
 import authRoutes from "./auth.routes.js";
+import rabbitmqService from "./rabbitmq.service.js";
 
 // dotenv ile .env dosyasını yükle
 dotenv.config();

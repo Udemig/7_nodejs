@@ -81,3 +81,13 @@ export interface IOrder extends Document {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface ICourier extends Document {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  status: "available" | "busy" | "offline";
+  createdAt: Date;
+  updatedAt: Date;
+}
