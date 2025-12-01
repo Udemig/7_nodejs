@@ -19,13 +19,24 @@ export class JwtAccessStrategy extends PassportStrategy(Strategy, 'access') {
       // token'ın secret keyini tanımla
       secretOrKey: configService.get('JWT_ACCESS_SECRET') as string,
       // token'ın süresi dolduysa hata dön
-      ignoreExpiration: false,
+      ignoreExpiration: true,
     });
   }
 
   // tokenın geçerli olduğunu kontr eder
   // return edile değer req.user'a atanır
   async validate(payload: any) {
+    // şuanın tarihi
+    const currentTime = Math.floor(Date.now() / 1000);
+
+    // token'ın süresi dolduysa hata dön
+    if (payload.exp && payload.exp < currentTime) {
+      throw new UnauthorizedException({
+        message: 'Tokenın süresi doldu',
+        code: 'TOKEN_EXPIRED',
+      });
+    }
+
     // payload'ın içindeki userId'ye sahip kullanıcının hesabu duruyor mu
     const user = await this.authService.findUserById(payload.userId);
 

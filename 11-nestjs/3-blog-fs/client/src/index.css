@@ -1,0 +1,230 @@
+@import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap");
+
+@theme {
+  --font-sans: "Outfit", sans-serif;
+  --font-inter: "DM Sans", sans-serif;
+
+  --color-white: #fff;
+  --color-black: #000;
+
+  --color-yellow-55: #f59e0b;
+  --color-yellow-60: #fbbf24;
+  --color-yellow-70: #fcd34d;
+  --color-yellow-80: #fde68a;
+  --color-yellow-90: #fef3c7;
+  --color-yellow-95: #fffbeb;
+  --color-yellow-97: #fffdf0;
+  --color-yellow-99: #fffefe;
+
+  --color-dark-08: #0a0a0f;
+  --color-dark-10: #121218;
+  --color-dark-15: #1a1a24;
+  --color-dark-20: #252530;
+  --color-dark-25: #32323e;
+  --color-dark-30: #3f3f4d;
+  --color-dark-35: #4d4d5c;
+  --color-dark-40: #5a5a6b;
+  --color-grey-50: #7f7f91;
+  --color-grey-60: #9999a8;
+  --color-grey-70: #b3b3bf;
+  --color-grey-80: #ccccd6;
+  --color-grey-90: #e6e6ed;
+  --color-grey-95: #f3f3f7;
+  --color-grey-97: #f7f7fa;
+  --color-grey-99: #fcfcfd;
+
+  --color-accent: #f59e0b;
+  --color-accent-glow: rgba(245, 158, 11, 0.3);
+}
+
+@layer components {
+  .padding-x {
+    @apply px-4 md:px-[30px] lg:px-[40px] xl:px-[80px] 2xl:px-[160px];
+  }
+
+  .dropdown-item {
+    @apply hover:bg-white/10 transition-all duration-200 px-3 py-2 rounded-lg cursor-pointer whitespace-nowrap w-full backdrop-blur-sm;
+  }
+
+  .submit-button {
+    @apply flex w-full justify-center rounded-xl bg-gradient-to-r from-yellow-55 to-yellow-60 px-4 py-2.5 text-sm/6 font-semibold shadow-lg shadow-yellow-55/20 hover:shadow-yellow-55/40 hover:scale-[1.02] cursor-pointer focus:outline-2 focus:outline-offset-2 focus:outline-yellow-55 text-black transition-all duration-300;
+  }
+
+  .small-text {
+    @apply text-grey-50 text-sm md:text-base xl:text-lg;
+  }
+
+  .post-btn {
+    @apply border border-white/10 bg-white/5 backdrop-blur-sm p-2 w-[75px] flex items-center justify-center gap-2 rounded-full cursor-pointer hover:bg-white/10 hover:border-yellow-55/30 text-gray-300 transition-all duration-200;
+  }
+
+  .input {
+    @apply block w-full rounded-xl bg-white/95 px-4 py-2.5 text-base text-black outline-none ring-1 ring-white/20 placeholder:text-zinc-400 focus:ring-2 focus:ring-yellow-55/50 sm:text-sm/6 transition-all duration-200;
+  }
+
+  .label {
+    @apply block text-sm/6 font-medium text-white/90;
+  }
+
+  .group {
+    @apply flex flex-col gap-2;
+  }
+
+  .editor-toolbar button:hover {
+    @apply bg-zinc-200 text-black;
+  }
+
+  .editor-toolbar .active {
+    @apply bg-yellow-55! text-black;
+  }
+
+  .fullscreen button {
+    @apply bg-white text-black;
+  }
+
+  .blog-button {
+    @apply border border-white/10 px-4 py-2 rounded-xl hover:bg-white/5 hover:border-yellow-55/30 transition-all duration-200 cursor-pointer flex items-center gap-2 backdrop-blur-sm;
+  }
+
+  .glass-card {
+    @apply bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl;
+  }
+
+  .glow-accent {
+    @apply shadow-lg shadow-yellow-55/10;
+  }
+
+  .nav-link {
+    @apply px-3 py-2 rounded-lg transition-all text-grey-50 hover:text-white hover:bg-white/5;
+  }
+
+  .active {
+    @apply text-yellow-55! bg-yellow-55/10!;
+  }
+}
+
+/* Smooth animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(245, 158, 11, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(245, 158, 11, 0.4);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.5s ease-out forwards;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+.prose {
+  max-width: 100ch;
+  color: rgb(236, 236, 236);
+}
+
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4,
+.prose h5,
+.prose h6 {
+  color: black;
+  font-size: 1.5rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.prose p,
+.prose ul,
+.prose ol,
+.prose blockquote,
+.prose code {
+  color: rgb(42, 42, 42);
+  margin-bottom: 1em;
+}
+
+.prose a {
+  text-decoration: underline;
+  color: rgb(0, 29, 244);
+}
+
+.prose code,
+.prose pre {
+  background: rgb(199, 197, 197);
+  padding: 5px;
+  border-radius: 5px;
+  overflow-x: auto;
+}
+
+.prose blockquote {
+  border-left: 4px solid rgb(199, 197, 197);
+  padding-left: 5px;
+  font-style: italic;
+}
+
+.prose-invert {
+  color: white;
+  max-width: 200ch;
+}
+
+.prose-invert h1,
+.prose-invert h2,
+.prose-invert h3,
+.prose-invert h4,
+.prose-invert h5,
+.prose-invert h6 {
+  color: white;
+}
+
+.prose-invert p,
+.prose-invert ul,
+.prose-invert ol,
+.prose-invert blockquote,
+.prose-invert code {
+  color: rgb(208, 208, 208);
+  margin-bottom: 1em;
+}
+
+.prose-invert code,
+.prose-invert pre {
+  background: rgb(171, 170, 170);
+  color: black;
+}

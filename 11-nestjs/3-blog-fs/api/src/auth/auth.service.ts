@@ -22,7 +22,7 @@ export class AuthService {
   ) {}
 
   // tokenları oluştur
-  private async generateTokens(user: UserDocument) {
+  async generateTokens(user: UserDocument) {
     // token'ın versini belirle
     const payload = { userId: user.id, userName: user.username };
 
