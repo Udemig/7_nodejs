@@ -5,6 +5,9 @@ import Home from "./pages/home";
 import Detail from "./pages/detail";
 import Login from "./pages/login";
 import Register from "./pages/register";
+import OwnBlogs from "./pages/own-blogs";
+import BlogForm from "./pages/blog-form";
+import Protected from "./components/protected";
 
 const App = () => {
   return (
@@ -21,6 +24,12 @@ const App = () => {
           <Route path="/blog/:id" element={<Detail />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+
+          <Route  element={<Protected />}>
+            <Route path="/own-blogs" element={<OwnBlogs />} />
+            <Route path="/blog/create" element={<BlogForm />} />
+            <Route path="/blog/:id/edit" element={<BlogForm />} />
+          </Route>
         </Routes>
       </main>
 

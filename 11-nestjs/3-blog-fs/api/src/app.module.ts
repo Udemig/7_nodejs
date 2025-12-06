@@ -4,6 +4,8 @@ import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from './auth/auth.module';
+import { BlogModule } from './blog/blog.module';
+import { CommentModule } from './comment/comment.module';
 
 @Module({
   imports: [
@@ -14,6 +16,8 @@ import { AuthModule } from './auth/auth.module';
       process.env.MONGO_URI || 'mongodb://localhost/blogdb',
     ),
     AuthModule,
+    BlogModule,
+    CommentModule,
   ],
   controllers: [AppController],
   providers: [AppService],

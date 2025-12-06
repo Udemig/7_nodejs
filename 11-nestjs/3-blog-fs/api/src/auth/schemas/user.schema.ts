@@ -1,5 +1,5 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
+import { Document, HydratedDocument } from 'mongoose';
 import bcrypt from 'bcrypt';
 
 export type UserDocument = HydratedDocument<User>;
@@ -15,7 +15,7 @@ export type UserDocument = HydratedDocument<User>;
     },
   },
 })
-export class User {
+export class User extends Document {
   @Prop({ required: true, unique: true })
   username: string;
 
