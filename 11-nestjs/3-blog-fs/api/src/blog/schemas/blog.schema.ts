@@ -1,36 +1,53 @@
-import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import mongoose, { Document } from "mongoose";
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import mongoose, { Document } from 'mongoose';
 
 @Schema({
-    timestamps:true,
-    versionKey:false,
-    toJSON:{
-        virtuals:true,
-        transform: (doc,ret:Record<string,any>) => {
-            delete ret._id
-            return ret
-        }
-    }
+  timestamps: true,
+  versionKey: false,
+  toJSON: {
+    virtuals: true,
+    transform: (doc, ret: Record<string, any>) => {
+      delete ret._id;
+      return ret;
+    },
+  },
+  toObject: {
+    virtuals: true,
+    transform: (doc, ret: Record<string, any>) => {
+      delete ret._id;
+      return ret;
+    },
+  },
 })
 export class Blog extends Document {
-  @Prop({required:true})
-  title:string;
+  @Prop({ required: true })
+  title: string;
 
-  @Prop({required:true})
-  content:string;
-
-  @Prop()
-  photo:string;
+  @Prop({ required: true })
+  content: string;
 
   @Prop()
-  tags:string[];
+  photo: string;
 
-  @Prop({required:true,type:mongoose.Schema.Types.ObjectId, ref:"User"})
-  author:string
+  @Prop()
+  tags: string[];
+
+  @Prop({ required: true, type: mongoose.Schema.Types.ObjectId, ref: 'User' })
+  author: string;
+
+  commentCount?: number;
 }
 
-const BlogSchema = SchemaFactory.createForClass(Blog)
+const BlogSchema = SchemaFactory.createForClass(Blog);
 
-export type BlogDocument = Blog & Document
+// sanal değer olarak bloga gelen yorumların sayısını hesapla
+BlogSchema.virtual('commentCount', {
+  ref: 'Comment',
+  localField: 'id',
+  foreignField: 'blog',
+  count: true,
+});
 
-export {BlogSchema}
+export type BlogDocument = Blog & Document;
+
+export { BlogSchema };

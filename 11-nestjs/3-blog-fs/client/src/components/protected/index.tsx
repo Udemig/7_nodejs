@@ -3,17 +3,17 @@ import { useAuth } from "../../context/auth-context";
 import PageLoader from "../loader/page-loader";
 
 const Protected = () => {
-    // auth context'den kullanıcı verilerini al
-    const {loading,user} =useAuth()
-    
-    // yüklenme devam ediyorsa ekrana loader bas
-    if(loading) return <PageLoader />
+  // auth context'den kullanıcı verilerini al
+  const { loading, user } = useAuth();
 
-    // user yoksa anasayfaya yönlendir
-    if(!user) return <Navigate to="/" />
+  // yüklenme devam ediyorsa ekrana loader bas
+  if (loading) return <PageLoader />;
 
-    // alt route'un içeriğini ekrana bas
-    return <Outlet />
+  // user yoksa anasayfaya yönlendir
+  if (!user) return <Navigate to="/" />;
+
+  // alt route'un içeriğini ekrana bas
+  return <Outlet />;
 };
 
 export default Protected;

@@ -5,9 +5,11 @@ import { Blog, BlogSchema } from './schemas/blog.schema';
 import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
-  imports:[MongooseModule.forFeature([{ name:Blog.name,schema:BlogSchema}])],
+  imports: [
+    MongooseModule.forFeature([{ name: Blog.name, schema: BlogSchema }]),
+  ],
   controllers: [BlogController],
   providers: [BlogService],
-  exports: [BlogService]
+  exports: [BlogService],
 })
 export class BlogModule {}

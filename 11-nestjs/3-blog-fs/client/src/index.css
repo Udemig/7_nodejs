@@ -38,6 +38,16 @@
   --color-accent-glow: rgba(245, 158, 11, 0.3);
 }
 
+::-webkit-scrollbar {
+  background: #0a0a0f;
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #252530;
+}
+
 @layer components {
   .padding-x {
     @apply px-4 md:px-[30px] lg:px-[40px] xl:px-[80px] 2xl:px-[160px];

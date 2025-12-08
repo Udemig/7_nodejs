@@ -17,9 +17,62 @@ interface User {
   updatedAt: string;
 }
 
+// ------------ Response Type -------------------
+
+interface Pagination {
+  total: number;
+  page: number;
+  limit: number;
+  totalPage: number;
+}
+
 interface Response<T> {
   message: string;
   data: T;
 }
 
-export type { RegisterValues, LoginValues, User, Response };
+interface PaginatedResponse<T> extends Response<T> {
+  pagination: Pagination;
+}
+
+// ------------ Blogs --------------
+
+interface BasicAuthor {
+  username: string;
+  email: string;
+  id: string;
+}
+
+interface DetailedAuthor extends BasicAuthor {
+  createdAt: string;
+  updatedAt: string;
+}
+
+interface Blog<T = BasicAuthor> {
+  id: string;
+  title: string;
+  content: string;
+  tags: string[];
+  author: T;
+  createdAt: string;
+  updatedAt: string;
+  commentCount: number;
+}
+
+interface GetAllParams {
+  limit?: number;
+  page?: number;
+  userId?: string;
+}
+
+export type {
+  RegisterValues,
+  LoginValues,
+  User,
+  Response,
+  PaginatedResponse,
+  Blog,
+  GetAllParams,
+  BasicAuthor,
+  DetailedAuthor,
+};
