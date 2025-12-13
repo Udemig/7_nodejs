@@ -1,12 +1,12 @@
 import type { FC } from "react";
-import { useBlogs } from "../../hooks/blog-hooks";
+import { useGetBlogs } from "../../hooks/blog-hooks";
 import BasicLoader from "../../components/loader/basic-loader";
 import Error from "../../components/error";
 import Tag from "./tag";
 import Post from "./post";
 
 const List: FC = () => {
-  const { isLoading, error, data, refetch } = useBlogs();
+  const { isLoading, error, data, refetch } = useGetBlogs();
 
   if (isLoading) return <BasicLoader />;
 

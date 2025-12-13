@@ -235,6 +235,7 @@
 
 .prose-invert code,
 .prose-invert pre {
-  background: rgb(171, 170, 170);
+  background: rgb(132, 129, 129);
   color: black;
+  margin: 15px 0;
 }

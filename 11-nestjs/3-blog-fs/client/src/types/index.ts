@@ -65,6 +65,16 @@ interface GetAllParams {
   userId?: string;
 }
 
+// Comment
+interface Comment {
+  content: string;
+  user: BasicAuthor;
+  blog: string;
+  createdAt: string;
+  updatedAt: string;
+  id: string;
+}
+
 export type {
   RegisterValues,
   LoginValues,
@@ -75,4 +85,5 @@ export type {
   GetAllParams,
   BasicAuthor,
   DetailedAuthor,
+  Comment,
 };

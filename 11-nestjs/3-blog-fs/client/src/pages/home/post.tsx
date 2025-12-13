@@ -1,6 +1,7 @@
 import type { FC } from "react";
 import type { Blog } from "../../types";
 import { Link } from "react-router-dom";
+import { FaArrowRight } from "react-icons/fa";
 
 interface Props {
   blog: Blog;
@@ -39,7 +40,20 @@ const Post: FC<Props> = ({ blog }) => {
           <h2 className="text-xl md:text-2xl font-bold group-hover:text-yellow-55 transition-colors">
             {blog.title}
           </h2>
+
+          <p className="text-sm text-grey-50 leading-relaxed">
+            {blog.content.slice(0, 100)}...
+          </p>
         </div>
+      </div>
+
+      <div className="flex items-center max-md:hidden">
+        <button className="border border-white/10 rounded-xl py-2.5 px-5 flex items-center gap-2 cursor-pointer hover:bg-yellow-55/10 hover:border-yellow-55/30 transition-all duration-300 group-hover:translate-x-1">
+          <span className="text-grey-60 group-hover:text-white transition-colors">
+            Blog'a Git
+          </span>
+          <FaArrowRight className="text-yellow-55 group-hover:translate-x-1 transition-transform" />
+        </button>
       </div>
     </Link>
   );

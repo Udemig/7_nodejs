@@ -15,7 +15,7 @@ const blogService = {
   },
 
   getOne: async (id: string) => {
-    const res = await api.get<Response<Blog<DetailedAuthor>[]>>(`/blogs/${id}`);
+    const res = await api.get<Response<Blog<DetailedAuthor>>>(`/blogs/${id}`);
 
     return res.data;
   },
@@ -24,7 +24,11 @@ const blogService = {
 
   update: async () => {},
 
-  delete: async () => {},
+  delete: async (id: string) => {
+    const res = await api.delete(`/blogs/${id}`);
+
+    return res.data;
+  },
 };
 
 export default blogService;
