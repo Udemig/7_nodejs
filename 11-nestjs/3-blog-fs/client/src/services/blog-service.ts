@@ -5,6 +5,7 @@ import type {
   GetAllParams,
   Response,
   DetailedAuthor,
+  BlogFormValues,
 } from "../types";
 
 const blogService = {
@@ -20,9 +21,17 @@ const blogService = {
     return res.data;
   },
 
-  create: async () => {},
+  create: async (data: BlogFormValues) => {
+    const res = await api.post<Response<Blog>>("/blogs", data);
 
-  update: async () => {},
+    return res.data;
+  },
+
+  update: async (id: string, data: BlogFormValues) => {
+    const res = await api.patch<Response<Blog>>(`/blogs/${id}`, data);
+
+    return res.data;
+  },
 
   delete: async (id: string) => {
     const res = await api.delete(`/blogs/${id}`);

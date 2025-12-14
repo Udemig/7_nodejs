@@ -59,6 +59,12 @@ interface Blog<T = BasicAuthor> {
   commentCount: number;
 }
 
+interface BlogFormValues {
+  title: string;
+  content: string;
+  tags: string[];
+}
+
 interface GetAllParams {
   limit?: number;
   page?: number;
@@ -86,4 +92,5 @@ export type {
   BasicAuthor,
   DetailedAuthor,
   Comment,
+  BlogFormValues,
 };

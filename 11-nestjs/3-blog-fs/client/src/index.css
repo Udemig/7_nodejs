@@ -110,7 +110,7 @@
   }
 
   .active {
-    @apply text-yellow-55! bg-yellow-55/10!;
+    @apply text-yellow-55 bg-yellow-55/10;
   }
 }
 

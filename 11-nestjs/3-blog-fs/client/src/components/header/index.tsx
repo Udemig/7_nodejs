@@ -8,7 +8,7 @@ const Header: FC = () => {
   const { user, logout } = useAuth();
 
   return (
-    <header>
+    <header className="z-50">
       {/* Üst Yazı */}
       <div className="bg-linear-to-r from-dark-08 via-dark-15 to-dark-08 text-sm md:text-base px-4 py-2.5 md:px-6 md:py-3 flex justify-center gap-2 border-b border-white/5">
         <span className="text-grey-60">
@@ -45,7 +45,6 @@ const Header: FC = () => {
         </nav>
 
         {/* Kullanıcı */}
-
         <div>
           {!user ? (
             <Link
@@ -62,7 +61,7 @@ const Header: FC = () => {
               </div>
 
               {/* Dropdown */}
-              <div className="z-999999 hidden group-hover:block absolute top-9 -right-2 glass-card p-2 min-w-40 shadow-2xl text-center">
+              <div className="z-999999 hidden group-hover:block absolute top-9 -right-2 glass-card bg-dark-10/90 p-2 min-w-40 shadow-2xl text-center">
                 <Link to="/blog/create" className="dropdown-item block">
                   Blog Yaz
                 </Link>
